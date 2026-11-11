@@ -11,6 +11,12 @@ async function complete(user, value = "125") {
 }
 
 describe("reading form", () => {
+  it("does not steal focus when a date or editing state changes", () => {
+    const { rerender } = render(<ReadingForm selectedDate={selectedDate} onSave={vi.fn()} focusRequest={1} />);
+    expect(screen.getByLabelText("Glucose value")).not.toHaveFocus();
+    rerender(<ReadingForm key="new-date" selectedDate="2024-10-14" onSave={vi.fn()} focusRequest={1} />);
+    expect(screen.getByLabelText("Glucose value")).not.toHaveFocus();
+  });
   it.each([
     ["", "Please enter a glucose value."],
     ["39", "between 40 and 600"],
