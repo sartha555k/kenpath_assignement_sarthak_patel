@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { errorHandler } from './errors.js';
+import { authRouter } from './auth.js';
 
 export function createApp({ db, config }) {
   const app = express();
@@ -17,6 +18,7 @@ export function createApp({ db, config }) {
       res.status(503).json({ error: { message: 'Database is unavailable.' } });
     }
   });
+  app.use('/api/auth', authRouter(db, config));
   app.use((req, res) => res.status(404).json({ error: { message: 'Route not found.' } }));
   app.use(errorHandler);
   return app;
