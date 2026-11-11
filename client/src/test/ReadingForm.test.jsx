@@ -5,17 +5,30 @@ import { ReadingForm } from "../components/ReadingForm.jsx";
 
 const selectedDate = "2024-10-15";
 async function complete(user, value = "125") {
-  await user.click(screen.getByRole("combobox", {name:"Time slot"}));
-  await user.click(screen.getByRole("option", {name:"After lunch"}));
+  await user.click(screen.getByRole("combobox", { name: "Time slot" }));
+  await user.click(screen.getByRole("option", { name: "After lunch" }));
   if (value) await user.type(screen.getByLabelText("Glucose value"), value);
   await user.click(screen.getByRole("button", { name: "Save reading" }));
 }
 
 describe("reading form", () => {
   it("does not steal focus when a date or editing state changes", () => {
-    const { rerender } = render(<ReadingForm selectedDate={selectedDate} onSave={vi.fn()} focusRequest={1} />);
+    const { rerender } = render(
+      <ReadingForm
+        selectedDate={selectedDate}
+        onSave={vi.fn()}
+        focusRequest={1}
+      />,
+    );
     expect(screen.getByLabelText("Glucose value")).not.toHaveFocus();
-    rerender(<ReadingForm key="new-date" selectedDate="2024-10-14" onSave={vi.fn()} focusRequest={1} />);
+    rerender(
+      <ReadingForm
+        key="new-date"
+        selectedDate="2024-10-14"
+        onSave={vi.fn()}
+        focusRequest={1}
+      />,
+    );
     expect(screen.getByLabelText("Glucose value")).not.toHaveFocus();
   });
   it.each([

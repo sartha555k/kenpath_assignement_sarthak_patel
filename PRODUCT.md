@@ -22,6 +22,11 @@ one-decimal average. Existing backend contract remains authoritative.
 ## Brand Commitments
 Sweety. User requests a minimalist light interface, bold typography, animation,
 and responsive mobile layouts, informed by award-winning references.
+Latest feedback explicitly rejects the original olive palette and black as a
+replacement accent. The revised implementation uses cornflower blue. Users need
+stable editing without focus jumps or page-wide loading flashes, date-grouped
+history, visible chart details, animated calendar/slot controls and an encouraging
+welcome during signup/login. Report entry must preserve the current screen.
 
 ## Evidence on Hand
 Actual backend and seeded demo data. No medical targets, treatment advice,

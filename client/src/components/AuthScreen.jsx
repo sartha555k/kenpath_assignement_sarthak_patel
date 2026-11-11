@@ -10,7 +10,11 @@ import {
 import { Brand } from "./Brand.jsx";
 import { api, session } from "../lib/api.js";
 
-export function AuthScreen({ onAuthenticated, onAuthenticating, sessionMessage = "" }) {
+export function AuthScreen({
+  onAuthenticated,
+  onAuthenticating,
+  sessionMessage = "",
+}) {
   const [mode, setMode] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);

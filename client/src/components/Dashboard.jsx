@@ -70,9 +70,9 @@ export function Dashboard({ user, onLogout, onReady }) {
   const [composerOpen, setComposerOpen] = useState(false);
   const [composerBusy, setComposerBusy] = useState(false);
   const composerTitle = useRef(null);
+  const composerOpener = useRef(null);
   const [initialSlot, setInitialSlot] = useState("");
   const [formVersion, setFormVersion] = useState(0);
-  const [focusRequest, setFocusRequest] = useState(0);
   const [toast, setToast] = useState("");
   const [page, setPage] = useState(1);
   const [history, setHistory] = useState(null);
@@ -99,7 +99,10 @@ export function Dashboard({ user, onLogout, onReady }) {
         onReady?.();
       })
       .catch((failure) => {
-        if (failure.name !== "AbortError") { setError(failure.message); onReady?.(); }
+        if (failure.name !== "AbortError") {
+          setError(failure.message);
+          onReady?.();
+        }
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
@@ -112,7 +115,9 @@ export function Dashboard({ user, onLogout, onReady }) {
     const controller = new AbortController();
     if (loadedHistoryPage.current !== page) setHistoryLoading(true);
     setHistoryError("");
-    api(`/readings?groupBy=date&page=${page}&limit=7`, { signal: controller.signal })
+    api(`/readings?groupBy=date&page=${page}&limit=7`, {
+      signal: controller.signal,
+    })
       .then((data) => {
         if (controller.signal.aborted) return;
         loadedHistoryPage.current = page;
@@ -138,7 +143,6 @@ export function Dashboard({ user, onLogout, onReady }) {
   }, [toast]);
 
   function selectDate(value) {
-    setFocusRequest(0);
     setDate(value);
     setEditing(null);
     setInitialSlot("");
@@ -147,29 +151,31 @@ export function Dashboard({ user, onLogout, onReady }) {
   function resetForm() {
     setEditing(null);
     setInitialSlot("");
-    setFocusRequest(0);
     setFormVersion((version) => version + 1);
   }
   function navigate(value) {
     setView(value);
-    setFocusRequest(0);
     window.scrollTo({ top: 0, behavior: "instant" });
   }
   function openForm(reading = null, slot = "") {
-    if (view !== "overview") setComposerOpen(true);
+    if (view !== "overview") {
+      composerOpener.current = document.activeElement;
+      setComposerOpen(true);
+    }
     if (reading && reading.date !== date) setDate(reading.date);
     setEditing(reading);
     setInitialSlot(slot);
     setFormVersion((version) => version + 1);
-    setFocusRequest((count) => count + 1);
-    if (view === "overview") requestAnimationFrame(() =>
-      formRegion.current?.scrollIntoView({
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "instant"
-          : "smooth",
-        block: "nearest",
-      }),
-    );
+    if (view === "overview")
+      requestAnimationFrame(() =>
+        formRegion.current?.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "instant"
+            : "smooth",
+          block: "nearest",
+        }),
+      );
   }
 
   async function saveReading(body, id) {
@@ -294,7 +300,7 @@ export function Dashboard({ user, onLogout, onReady }) {
             </button>
           </div>
         </header>
-        <main id="main-content" className="main-content">
+        <main key={view} id="main-content" className="main-content">
           <div className="page-heading">
             <div>
               <h1>
@@ -439,7 +445,6 @@ export function Dashboard({ user, onLogout, onReady }) {
                   initialSlot={initialSlot}
                   onSave={saveReading}
                   onCancel={resetForm}
-                  focusRequest={focusRequest}
                 />
                 <section className="month-note">
                   <div className="section-heading">
@@ -482,7 +487,11 @@ export function Dashboard({ user, onLogout, onReady }) {
                   </button>
                 </div>
               ) : history?.readings.length ? (
-                <HistoryGroups readings={history.readings} onEdit={openForm} onDelete={deleteReading} />
+                <HistoryGroups
+                  readings={history.readings}
+                  onEdit={openForm}
+                  onDelete={deleteReading}
+                />
               ) : (
                 <div className="empty-state">
                   <BookOpen size={30} strokeWidth={1.3} />
@@ -588,12 +597,64 @@ export function Dashboard({ user, onLogout, onReady }) {
           </button>
         ))}
       </nav>
-      <Dialog.Root open={composerOpen} onOpenChange={open=>{if(!composerBusy) setComposerOpen(open);}}>
-        <Dialog.Portal><Dialog.Overlay className="reading-dialog-overlay"/><Dialog.Content className="reading-dialog" onOpenAutoFocus={event=>{event.preventDefault();composerTitle.current?.focus();}} onEscapeKeyDown={event=>{if(composerBusy)event.preventDefault();}} onPointerDownOutside={event=>{if(composerBusy)event.preventDefault();}}>
-          <div className="dialog-heading"><Dialog.Title ref={composerTitle} tabIndex={-1}>{editing?'Update your journal':'A quick check-in.'}</Dialog.Title><Dialog.Close className="icon-button" disabled={composerBusy} aria-label="Close reading form"><X size={18}/></Dialog.Close></div>
-          <Dialog.Description className="dialog-description">{view==='reports'?'Keep your report open while you record a reading.':'Your history stays right where you left it.'}</Dialog.Description>
-          <ReadingForm key={`${date}-${formVersion}`} selectedDate={date} readings={dailyReadings} editing={editing} initialSlot={initialSlot} onSave={saveReading} onCancel={()=>{resetForm();setComposerOpen(false);}} onBusyChange={setComposerBusy}/>
-        </Dialog.Content></Dialog.Portal>
+      <Dialog.Root
+        open={composerOpen}
+        onOpenChange={(open) => {
+          if (!composerBusy) setComposerOpen(open);
+        }}
+      >
+        <Dialog.Portal>
+          <Dialog.Overlay className="reading-dialog-overlay" />
+          <Dialog.Content
+            className="reading-dialog"
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              if (composerOpener.current?.isConnected)
+                composerOpener.current.focus({ preventScroll: true });
+            }}
+            onOpenAutoFocus={(event) => {
+              event.preventDefault();
+              composerTitle.current?.focus();
+            }}
+            onEscapeKeyDown={(event) => {
+              if (composerBusy) event.preventDefault();
+            }}
+            onPointerDownOutside={(event) => {
+              if (composerBusy) event.preventDefault();
+            }}
+          >
+            <div className="dialog-heading">
+              <Dialog.Title ref={composerTitle} tabIndex={-1}>
+                {editing ? "Update your journal" : "A quick check-in."}
+              </Dialog.Title>
+              <Dialog.Close
+                className="icon-button"
+                disabled={composerBusy}
+                aria-label="Close reading form"
+              >
+                <X size={18} />
+              </Dialog.Close>
+            </div>
+            <Dialog.Description className="dialog-description">
+              {view === "reports"
+                ? "Keep your report open while you record a reading."
+                : "Your history stays right where you left it."}
+            </Dialog.Description>
+            <ReadingForm
+              key={`${date}-${formVersion}`}
+              selectedDate={date}
+              readings={dailyReadings}
+              editing={editing}
+              initialSlot={initialSlot}
+              onSave={saveReading}
+              onCancel={() => {
+                resetForm();
+                setComposerOpen(false);
+              }}
+              onBusyChange={setComposerBusy}
+            />
+          </Dialog.Content>
+        </Dialog.Portal>
       </Dialog.Root>
       {toast && (
         <div className="toast" role="status">
