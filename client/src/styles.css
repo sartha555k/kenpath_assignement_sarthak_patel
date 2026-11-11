@@ -30,7 +30,7 @@ button, a, input, select { transition: background-color 180ms, border-color 180m
 :focus-visible { outline: 3px solid #7b8f4d; outline-offset: 4px; }
 ::selection { background: var(--lime); color: var(--ink); }
 input { caret-color: var(--olive); }
-input::placeholder { color: #747a70; }
+input::placeholder { color: var(--muted); }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { text-wrap: balance; }
 .boot-screen { min-height: 100dvh; display: grid; place-content: center; gap: 20px; text-align: center; }
@@ -189,7 +189,7 @@ h1, h2, h3 { text-wrap: balance; }
 .glucose-field { margin-top: 3px; }
 .glucose-input { display: flex; gap: 10px; align-items: baseline; border-bottom: 1px solid #ccd5bd; padding-bottom: 8px; }
 .glucose-input input { padding: 4px 0; font-size: 43px; line-height: 1.4; background: transparent; border: none; border-radius: 0; width: 100%; letter-spacing: -.03em; font-weight: 550; font-variant-numeric: tabular-nums; }
-.glucose-input input::placeholder { color: #879177; }
+.glucose-input input::placeholder { color: var(--muted); }
 .glucose-input input:focus-visible { outline-offset: 0; border-radius: 3px; }
 .glucose-input > span { font-size: 13px; color: var(--muted); white-space: nowrap; }
 .glucose-field > p { font-size: 9px; line-height: 1.7; color: var(--muted); margin-top: 3px; }
