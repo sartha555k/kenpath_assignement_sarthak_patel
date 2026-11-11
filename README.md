@@ -154,6 +154,35 @@ The seed adds readings for the last seven days and three dates in the previous
 month. Rerunning it preserves existing accounts and readings. Use it only in a
 development database; it is disabled when `NODE_ENV=production`.
 
+### Seed a specific demo date range
+
+The date-range seed fills all four slots for the demo account, including both
+endpoints, and preserves any readings already stored for those slots:
+
+```sh
+npm run db:seed:range -- --from 2026-11-12 --to 2026-12-01 --allow-future
+```
+
+This explicitly requested fixture range contains 20 days and 80 slots. Future
+dates require `--allow-future`; the seed does not relax the normal API/form rule
+against future readings. Future fixtures appear in history, while date selectors
+and reports continue to allow only dates through today. Existing accounts,
+passwords and reading values are not overwritten. The command reports inserted
+and preserved slot counts and is safe to rerun. Invalid dates, reversed ranges
+and ranges longer than 366 days are rejected.
+
+For the running Docker stack, use the same API image in a one-off seed container:
+
+```sh
+docker compose run --rm --no-deps -e NODE_ENV=development api \
+  node server/scripts/seed-range.js \
+  --from 2026-11-12 --to 2026-12-01 --allow-future
+```
+
+The command can also be run against a future hosted PostgreSQL database by
+configuring `DATABASE_URL` for that database and applying migrations first.
+Local PGlite data is not automatically uploaded when a hosted database is created.
+
 ## Environment
 
 All application settings are listed in [server/.env.example](server/.env.example).
@@ -377,6 +406,7 @@ and is merged back with a merge commit to preserve its history:
 - `feat/welcome-animation`
 - `feat/blue-theme-and-motion-polish`
 - `feat/docker-full-stack`
+- `feat/demo-date-range`
 
 New features use `feat/…`; bug fixes use `fix/…`. Future changes can use pull
 requests for review before merging. Initial backend feature branches are merged
