@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "test": "node --test --test-concurrency=1 test/*.test.js",
     "db:migrate": "node scripts/migrate.js",
-    "db:seed": "node scripts/seed.js"
+    "db:seed": "node scripts/seed.js",
+    "db:seed:range": "node scripts/seed-range.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
