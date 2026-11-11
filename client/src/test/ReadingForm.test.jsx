@@ -5,7 +5,8 @@ import { ReadingForm } from "../components/ReadingForm.jsx";
 
 const selectedDate = "2024-10-15";
 async function complete(user, value = "125") {
-  await user.selectOptions(screen.getByLabelText("Time slot"), "after_lunch");
+  await user.click(screen.getByRole("combobox", {name:"Time slot"}));
+  await user.click(screen.getByRole("option", {name:"After lunch"}));
   if (value) await user.type(screen.getByLabelText("Glucose value"), value);
   await user.click(screen.getByRole("button", { name: "Save reading" }));
 }
