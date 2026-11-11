@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: sweety-api
+    runtime: node
+    plan: free
+    branch: main
+    autoDeployTrigger: checksPass
+    buildCommand: npm ci --omit=dev --workspace server
+    # Free services do not support a separate pre-deploy command.
+    # Migrations are transactional and protected by an advisory lock.
+    startCommand: npm run db:migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_POOLED
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: APP_TIMEZONE
+        value: Asia/Kolkata
+      - key: TRUST_PROXY_HOPS
+        value: "1"
