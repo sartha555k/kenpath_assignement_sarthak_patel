@@ -26,6 +26,11 @@ test('reading CRUD, pagination and strict ownership', async () => {
     const list = await api.get('/api/readings?page=1&limit=1&date=2024-02-29').set('Authorization', auth);
     assert.equal(list.body.readings.length, 1);
     assert.equal(list.body.pagination.total, 1);
+    const range = await api.get('/api/readings?from=2024-02-01&to=2024-02-29').set('Authorization', auth);
+    assert.equal(range.body.pagination.total, 1);
+    assert.equal((await api.get('/api/readings?from=2024-03-01&to=2024-03-02').set('Authorization', auth)).body.pagination.total, 0);
+    assert.equal((await api.get('/api/readings?from=2024-03-01&to=2024-02-01').set('Authorization', auth)).status, 400);
+    assert.equal((await api.get('/api/readings?from=2024-02-30').set('Authorization', auth)).status, 400);
     assert.equal((await api.get('/api/readings?page=0').set('Authorization', auth)).status, 400);
     assert.equal((await api.get('/api/readings?limit=101').set('Authorization', auth)).status, 400);
     assert.equal((await api.delete(path).set('Authorization', auth)).status, 204);
