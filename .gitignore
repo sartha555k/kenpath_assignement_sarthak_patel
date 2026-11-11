@@ -8,3 +8,4 @@ coverage/
 dist/
 playwright-report/
 test-results/
+.impeccable/review/

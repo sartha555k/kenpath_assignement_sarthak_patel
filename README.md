@@ -1,11 +1,14 @@
 # Sweety — Blood Glucose Tracker
 
-Backend for the Kenpath assignment. Built with Node.js, Express and PostgreSQL.
-The React frontend will be implemented next.
+Sweety is a personal glucose journal built with React, Node.js, Express and
+PostgreSQL for the Kenpath assignment. Record up to four readings a day and review
+daily, month-to-date and previous-month reports.
+
+![Sweety desktop dashboard](docs/screenshots/dashboard-desktop.jpg)
 
 ## Requirements
 
-- Node.js 22 or newer and npm.
+- Node.js 22.12 or newer and npm.
 - PostgreSQL 17, or Docker with Compose to run the included database service.
 
 ## Install and run
@@ -45,6 +48,26 @@ The API runs at `http://localhost:4000/api`. `GET /api/health` checks database
 connectivity. `npm start` runs without the development file watcher.
 Migrations are transactional, tracked in `schema_migrations`, and safe to rerun.
 
+In a **second terminal**, start the React frontend:
+
+```sh
+npm run dev:client
+```
+
+Open the local URL printed by Vite, normally `http://127.0.0.1:5173`.
+Vite proxies `/api` requests to the backend on port 4000. Optional client settings
+are in [client/.env.example](client/.env.example); copy it to `client/.env` if
+you need a different API URL, proxy target or timezone.
+
+```sh
+npm run build        # Production frontend output: client/dist
+npm run test:client  # React Testing Library tests
+```
+
+For deployment, serve `client/dist` and route `/api` to the Express server, or set
+`VITE_API_URL` to the public API base URL before building and configure the server's
+`CLIENT_ORIGIN` for the frontend origin. Vite's proxy is development-only.
+
 Demo login: **demo@sweety.example** / **SweetyDemo123!**.
 The seed adds readings for the last seven days and three dates in the previous
 month. Rerunning it preserves existing accounts and readings. Use it only in a
@@ -66,6 +89,45 @@ environment variables take precedence. Never commit `server/.env`.
 | `APP_TIMEZONE` | Timezone defining today, default `Asia/Kolkata` |
 | `NODE_ENV` | `development` locally; `production` disables demo seeding |
 | `TEST_DATABASE_URL` | Optional separate database URL for PostgreSQL-backed tests |
+
+Client settings (public at build time): `VITE_API_URL` defaults to `/api`;
+`VITE_APP_TIMEZONE` defaults to `Asia/Kolkata` and must match the server timezone.
+`API_PROXY_TARGET` is a Vite development-server setting only and defaults to
+`http://127.0.0.1:4000`. No secrets belong in `VITE_` variables.
+
+## Frontend
+
+- Light, minimalist journal with locally served Manrope type and Lucide icons.
+- Signup/login, password visibility control, demo login and logout.
+- Date navigation, four daily slots, add/edit form and inline delete confirmation.
+- Daily summaries and month-to-date line chart using actual readings.
+- Paginated reading history and all three required report periods.
+- Inline validation, retryable connection errors, empty states and loading placeholders.
+- Session tokens live in `sessionStorage` and are verified on reload. Expired
+  sessions return to login. Closing the tab ends the browser session.
+- Responsive sidebar on desktop and bottom navigation on mobile; visible keyboard
+  focus, labelled controls, screen-reader feedback and reduced-motion support.
+
+The chart plots individual readings in chronological slot order (not continuous
+monitoring). It includes the entire selected month through the selected day,
+fetching a second page when there are more than 100 readings.
+
+Visual references: the warm, restrained palette and clear hierarchy in
+[Oura Ring on Awwwards](https://www.awwwards.com/sites/oura-ring) and the
+[Awwwards clean collection](https://www.awwwards.com/websites/clean/).
+The requested award MCP was not available; public reference pages were used.
+No third-party brand assets were copied.
+
+### Screenshots
+
+Captured using synthetic demo data; these contain no real patient information.
+
+| Desktop | Mobile |
+| --- | --- |
+| [Login](docs/screenshots/login-desktop.jpg) | [Login](docs/screenshots/login-mobile.jpg) |
+| [Dashboard](docs/screenshots/dashboard-desktop.jpg) | [Dashboard](docs/screenshots/dashboard-mobile.jpg) |
+| [Reports](docs/screenshots/reports-desktop.jpg) | [Reports](docs/screenshots/reports-mobile.jpg) |
+| [Signup](docs/screenshots/signup-desktop.jpg) | |
 
 ## API
 
@@ -97,6 +159,9 @@ Slots: `morning` (Morning / fasting), `after_breakfast`, `after_lunch`,
 calendar dates in `YYYY-MM-DD` format and cannot be in the future.
 Pagination defaults to page 1 and limit 20; the maximum limit is 100.
 Readings are ordered by date descending and then by slot in daily order.
+Optional inclusive `from=YYYY-MM-DD` and `to=YYYY-MM-DD` filters support the
+monthly chart. Invalid/future dates or a start date after the end date return 400.
+All date filters and pagination remain scoped to the authenticated user.
 
 Example report response:
 
@@ -152,6 +217,8 @@ curl http://localhost:4000/api/reports \
 
 ```sh
 npm test
+npm run test:client
+npm run build
 ```
 
 By default the API tests run against PGlite, an embedded PostgreSQL engine, so
@@ -169,7 +236,15 @@ TEST_DATABASE_URL=postgresql://sweety:sweety@localhost:5432/sweety_test npm test
 Tests create a unique schema for each case and drop it afterward. The test user
 needs permission to create schemas. Use a dedicated test database.
 GitHub Actions runs this suite against PostgreSQL 17 and also exercises migration
-reruns and the seed script.
+reruns, the seed script, frontend tests and the production frontend build.
+
+Frontend tests cover registration, login errors, required/range/integer validation,
+duplicate slots, future dates, server validation feedback and editing a slot
+without conflicting with itself. Browser QA also exercised signup/login,
+add/edit/delete with live report updates, history pagination and empty reports.
+Responsive checks covered widths 320, 390, 768, 1280 and 1440 pixels.
+Browser QA used the real Express API backed by disposable PGlite data because no
+standalone PostgreSQL server was installed locally; CI uses PostgreSQL 17.
 
 ## Git workflow
 
@@ -182,6 +257,10 @@ and is merged back with a merge commit to preserve its history:
 - `feat/reports`
 - `feat/demo-seed`
 - `feat/backend-documentation`
+- `feat/frontend-foundation`
+- `feat/frontend-authentication`
+- `feat/frontend-dashboard`
+- `feat/frontend-quality`
 
 New features use `feat/…`; bug fixes use `fix/…`. Future changes can use pull
 requests for review before merging. Initial backend feature branches are merged
@@ -202,6 +281,9 @@ locally with their histories preserved.
   refresh tokens, server-side revocation and password recovery are future improvements.
 - HTTPS and an appropriate production database connection are deployment concerns.
   The Docker service is a local development database.
-- Frontend screens, UI error messages and screenshots are pending the React phase.
+- Frontend date controls use the browser's native calendar; formatting follows the
+  browser locale. Stored/API dates always use `YYYY-MM-DD`.
+- Report numbers are descriptive; the app does not assign clinical target ranges
+  or recommend treatment.
 - With more time: patient timezone settings, token rotation, structured logging,
-  deployment configuration and frontend form tests. Charts are optional.
+  deployment configuration and broader automated browser coverage.
