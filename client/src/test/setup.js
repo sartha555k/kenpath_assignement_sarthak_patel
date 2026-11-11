@@ -10,5 +10,9 @@ HTMLElement.prototype.setPointerCapture = () => {};
 HTMLElement.prototype.releasePointerCapture = () => {};
 HTMLElement.prototype.scrollIntoView = () => {};
 window.scrollTo = () => {};
-window.matchMedia = () => ({matches:false,addEventListener(){},removeEventListener(){}});
+window.matchMedia = () => ({
+  matches: false,
+  addEventListener() {},
+  removeEventListener() {},
+});
 if (!window.PointerEvent) window.PointerEvent = MouseEvent;

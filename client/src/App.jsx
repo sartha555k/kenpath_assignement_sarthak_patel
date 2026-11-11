@@ -3,7 +3,7 @@ import { AuthScreen } from "./components/AuthScreen.jsx";
 import { Brand } from "./components/Brand.jsx";
 import { api, session } from "./lib/api.js";
 import { Dashboard } from "./components/Dashboard.jsx";
-import { WelcomeScreen } from './components/WelcomeScreen.jsx';
+import { WelcomeScreen } from "./components/WelcomeScreen.jsx";
 
 export function App() {
   const [user, setUser] = useState(null);
@@ -15,20 +15,32 @@ export function App() {
   const [minimumShown, setMinimumShown] = useState(false);
   const [journalReady, setJournalReady] = useState(false);
   const [welcomeLeaving, setWelcomeLeaving] = useState(false);
-  const ready = useCallback(()=>setJournalReady(true),[]);
+  const ready = useCallback(() => setJournalReady(true), []);
 
-  useEffect(()=>{
+  useEffect(() => {
+    if (!welcome && !loading) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [welcome, loading]);
+
+  useEffect(() => {
     if (!welcome) return;
     setMinimumShown(false);
-    const timer=setTimeout(()=>setMinimumShown(true),1400);
-    return ()=>clearTimeout(timer);
-  },[welcome]);
-  useEffect(()=>{
+    const timer = setTimeout(() => setMinimumShown(true), 1400);
+    return () => clearTimeout(timer);
+  }, [welcome]);
+  useEffect(() => {
     if (!welcome || !minimumShown || !journalReady) return;
     setWelcomeLeaving(true);
-    const timer = setTimeout(()=>{setWelcome(false);setWelcomeLeaving(false);},180);
-    return ()=>clearTimeout(timer);
-  },[welcome,minimumShown,journalReady]);
+    const timer = setTimeout(() => {
+      setWelcome(false);
+      setWelcomeLeaving(false);
+    }, 180);
+    return () => clearTimeout(timer);
+  }, [welcome, minimumShown, journalReady]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -67,8 +79,7 @@ export function App() {
     setMessage("");
     setConnectionError("");
   }
-  if (loading)
-    return <WelcomeScreen />;
+  if (loading) return <WelcomeScreen />;
   if (connectionError)
     return (
       <main className="boot-screen">
@@ -82,14 +93,26 @@ export function App() {
         </button>
       </main>
     );
-  return <><div inert={welcome} aria-hidden={welcome || undefined}>{!user ? (
-      <AuthScreen
-        onAuthenticating={busy=>{setWelcome(busy); if(busy)setJournalReady(false);}}
-        onAuthenticated={(account) => {
-          setUser(account);
-          setMessage("");
-        }}
-        sessionMessage={message}
-      />
-    ) : <Dashboard user={user} onLogout={logout} onReady={ready} />}</div>{welcome && <WelcomeScreen leaving={welcomeLeaving} />}</>;
+  return (
+    <>
+      <div inert={welcome} aria-hidden={welcome || undefined}>
+        {!user ? (
+          <AuthScreen
+            onAuthenticating={(busy) => {
+              setWelcome(busy);
+              if (busy) setJournalReady(false);
+            }}
+            onAuthenticated={(account) => {
+              setUser(account);
+              setMessage("");
+            }}
+            sessionMessage={message}
+          />
+        ) : (
+          <Dashboard user={user} onLogout={logout} onReady={ready} />
+        )}
+      </div>
+      {welcome && <WelcomeScreen leaving={welcomeLeaving} />}
+    </>
+  );
 }

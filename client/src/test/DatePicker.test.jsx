@@ -8,11 +8,13 @@ describe("report date selection", () => {
   it("selects a date through the calendar and closes it", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
-    render(<DatePicker date="2024-03-01" onChange={onChange}/>);
-    await user.click(screen.getByRole('button',{name:'Selected date'}));
-    await user.click(screen.getByRole('button',{name:/February 29th, 2024/}));
-    expect(onChange).toHaveBeenCalledWith('2024-02-29');
-    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+    render(<DatePicker date="2024-03-01" onChange={onChange} />);
+    await user.click(screen.getByRole("button", { name: "Selected date" }));
+    await user.click(
+      screen.getByRole("button", { name: /February 29th, 2024/ }),
+    );
+    expect(onChange).toHaveBeenCalledWith("2024-02-29");
+    expect(screen.queryByRole("grid")).not.toBeInTheDocument();
   });
 
   it("navigates across leap-day boundaries and disables tomorrow", async () => {

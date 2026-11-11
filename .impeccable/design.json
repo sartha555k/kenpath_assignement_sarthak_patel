@@ -1,40 +1,306 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-11T11:36:13.105920+00:00",
+  "generatedAt": "2026-11-11T12:23:33.317659+00:00",
   "title": "Design System: Sweety",
   "extensions": {
     "colorMeta": {
-      "olive": {
-        "role": "primary",
-        "displayName": "Olive"
-      },
-      "lime": {
-        "role": "primary",
-        "displayName": "Pale Lime"
-      },
       "bg": {
         "role": "neutral",
-        "displayName": "Off-white"
+        "displayName": "Off-white",
+        "tonalRamp": [
+          "oklch(15% 0.0057 264.5)",
+          "oklch(26% 0.0057 264.5)",
+          "oklch(38% 0.0057 264.5)",
+          "oklch(50% 0.0057 264.5)",
+          "oklch(62% 0.0057 264.5)",
+          "oklch(74% 0.0057 264.5)",
+          "oklch(86% 0.0057 264.5)",
+          "oklch(95% 0.0057 264.5)"
+        ]
       },
       "surface": {
         "role": "neutral",
-        "displayName": "White"
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.9)",
+          "oklch(26% 0.0000 89.9)",
+          "oklch(38% 0.0000 89.9)",
+          "oklch(50% 0.0000 89.9)",
+          "oklch(62% 0.0000 89.9)",
+          "oklch(74% 0.0000 89.9)",
+          "oklch(86% 0.0000 89.9)",
+          "oklch(95% 0.0000 89.9)"
+        ]
       },
       "panel": {
         "role": "neutral",
-        "displayName": "Soft Panel"
+        "displayName": "Soft Panel",
+        "tonalRamp": [
+          "oklch(15% 0.0144 264.5)",
+          "oklch(26% 0.0144 264.5)",
+          "oklch(38% 0.0144 264.5)",
+          "oklch(50% 0.0144 264.5)",
+          "oklch(62% 0.0144 264.5)",
+          "oklch(74% 0.0144 264.5)",
+          "oklch(86% 0.0144 264.5)",
+          "oklch(95% 0.0144 264.5)"
+        ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Ink"
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0150 261.5)",
+          "oklch(26% 0.0350 261.5)",
+          "oklch(38% 0.0445 261.5)",
+          "oklch(50% 0.0445 261.5)",
+          "oklch(62% 0.0445 261.5)",
+          "oklch(74% 0.0445 261.5)",
+          "oklch(86% 0.0445 261.5)",
+          "oklch(95% 0.0150 261.5)"
+        ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted"
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0150 258.8)",
+          "oklch(26% 0.0350 258.8)",
+          "oklch(38% 0.0407 258.8)",
+          "oklch(50% 0.0407 258.8)",
+          "oklch(62% 0.0407 258.8)",
+          "oklch(74% 0.0407 258.8)",
+          "oklch(86% 0.0407 258.8)",
+          "oklch(95% 0.0150 258.8)"
+        ]
       },
       "error": {
         "role": "error",
-        "displayName": "Error"
+        "displayName": "Error",
+        "tonalRamp": [
+          "oklch(15% 0.0150 27.9)",
+          "oklch(26% 0.0350 27.9)",
+          "oklch(38% 0.0650 27.9)",
+          "oklch(50% 0.1000 27.9)",
+          "oklch(62% 0.1050 27.9)",
+          "oklch(74% 0.0800 27.9)",
+          "oklch(86% 0.0450 27.9)",
+          "oklch(95% 0.0150 27.9)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Cornflower",
+        "tonalRamp": [
+          "oklch(15% 0.0150 269.1)",
+          "oklch(26% 0.0350 269.1)",
+          "oklch(38% 0.0650 269.1)",
+          "oklch(50% 0.1000 269.1)",
+          "oklch(62% 0.1050 269.1)",
+          "oklch(74% 0.0800 269.1)",
+          "oklch(86% 0.0450 269.1)",
+          "oklch(95% 0.0150 269.1)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Powder Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0150 270.4)",
+          "oklch(26% 0.0281 270.4)",
+          "oklch(38% 0.0281 270.4)",
+          "oklch(50% 0.0281 270.4)",
+          "oklch(62% 0.0281 270.4)",
+          "oklch(74% 0.0281 270.4)",
+          "oklch(86% 0.0281 270.4)",
+          "oklch(95% 0.0150 270.4)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "tonalRamp": [
+          "oklch(15% 0.0146 264.5)",
+          "oklch(26% 0.0146 264.5)",
+          "oklch(38% 0.0146 264.5)",
+          "oklch(50% 0.0146 264.5)",
+          "oklch(62% 0.0146 264.5)",
+          "oklch(74% 0.0146 264.5)",
+          "oklch(86% 0.0146 264.5)",
+          "oklch(95% 0.0146 264.5)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Accent Hover",
+        "tonalRamp": [
+          "oklch(15% 0.0150 268.5)",
+          "oklch(26% 0.0350 268.5)",
+          "oklch(38% 0.0650 268.5)",
+          "oklch(50% 0.1000 268.5)",
+          "oklch(62% 0.1050 268.5)",
+          "oklch(74% 0.0800 268.5)",
+          "oklch(86% 0.0450 268.5)",
+          "oklch(95% 0.0150 268.5)"
+        ]
+      },
+      "error-bg": {
+        "role": "neutral",
+        "displayName": "Error Bg",
+        "tonalRamp": [
+          "oklch(15% 0.0150 36.5)",
+          "oklch(26% 0.0161 36.5)",
+          "oklch(38% 0.0161 36.5)",
+          "oklch(50% 0.0161 36.5)",
+          "oklch(62% 0.0161 36.5)",
+          "oklch(74% 0.0161 36.5)",
+          "oklch(86% 0.0161 36.5)",
+          "oklch(95% 0.0150 36.5)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus",
+        "tonalRamp": [
+          "oklch(15% 0.0150 269.7)",
+          "oklch(26% 0.0350 269.7)",
+          "oklch(38% 0.0650 269.7)",
+          "oklch(50% 0.1000 269.7)",
+          "oklch(62% 0.1050 269.7)",
+          "oklch(74% 0.0800 269.7)",
+          "oklch(86% 0.0450 269.7)",
+          "oklch(95% 0.0150 269.7)"
+        ]
+      },
+      "chart-line": {
+        "role": "primary",
+        "displayName": "Chart Line",
+        "tonalRamp": [
+          "oklch(15% 0.0150 268.7)",
+          "oklch(26% 0.0350 268.7)",
+          "oklch(38% 0.0650 268.7)",
+          "oklch(50% 0.1000 268.7)",
+          "oklch(62% 0.1002 268.7)",
+          "oklch(74% 0.0800 268.7)",
+          "oklch(86% 0.0450 268.7)",
+          "oklch(95% 0.0150 268.7)"
+        ]
+      },
+      "chart-grid": {
+        "role": "neutral",
+        "displayName": "Chart Grid",
+        "tonalRamp": [
+          "oklch(15% 0.0146 264.5)",
+          "oklch(26% 0.0146 264.5)",
+          "oklch(38% 0.0146 264.5)",
+          "oklch(50% 0.0146 264.5)",
+          "oklch(62% 0.0146 264.5)",
+          "oklch(74% 0.0146 264.5)",
+          "oklch(86% 0.0146 264.5)",
+          "oklch(95% 0.0146 264.5)"
+        ]
+      },
+      "sidebar": {
+        "role": "neutral",
+        "displayName": "Sidebar",
+        "tonalRamp": [
+          "oklch(15% 0.0112 269.5)",
+          "oklch(26% 0.0112 269.5)",
+          "oklch(38% 0.0112 269.5)",
+          "oklch(50% 0.0112 269.5)",
+          "oklch(62% 0.0112 269.5)",
+          "oklch(74% 0.0112 269.5)",
+          "oklch(86% 0.0112 269.5)",
+          "oklch(95% 0.0112 269.5)"
+        ]
+      },
+      "nav-active": {
+        "role": "neutral",
+        "displayName": "Nav Active",
+        "tonalRamp": [
+          "oklch(15% 0.0150 269.8)",
+          "oklch(26% 0.0310 269.8)",
+          "oklch(38% 0.0310 269.8)",
+          "oklch(50% 0.0310 269.8)",
+          "oklch(62% 0.0310 269.8)",
+          "oklch(74% 0.0310 269.8)",
+          "oklch(86% 0.0310 269.8)",
+          "oklch(95% 0.0150 269.8)"
+        ]
+      },
+      "field-line": {
+        "role": "neutral",
+        "displayName": "Field Line",
+        "tonalRamp": [
+          "oklch(15% 0.0150 260.7)",
+          "oklch(26% 0.0227 260.7)",
+          "oklch(38% 0.0227 260.7)",
+          "oklch(50% 0.0227 260.7)",
+          "oklch(62% 0.0227 260.7)",
+          "oklch(74% 0.0227 260.7)",
+          "oklch(86% 0.0227 260.7)",
+          "oklch(95% 0.0150 260.7)"
+        ]
+      },
+      "form-panel": {
+        "role": "neutral",
+        "displayName": "Form Panel",
+        "tonalRamp": [
+          "oklch(15% 0.0144 264.5)",
+          "oklch(26% 0.0144 264.5)",
+          "oklch(38% 0.0144 264.5)",
+          "oklch(50% 0.0144 264.5)",
+          "oklch(62% 0.0144 264.5)",
+          "oklch(74% 0.0144 264.5)",
+          "oklch(86% 0.0144 264.5)",
+          "oklch(95% 0.0144 264.5)"
+        ]
+      },
+      "error-hover": {
+        "role": "neutral",
+        "displayName": "Error Hover",
+        "tonalRamp": [
+          "oklch(15% 0.0150 26.4)",
+          "oklch(26% 0.0350 26.4)",
+          "oklch(38% 0.0650 26.4)",
+          "oklch(50% 0.1000 26.4)",
+          "oklch(62% 0.1050 26.4)",
+          "oklch(74% 0.0800 26.4)",
+          "oklch(86% 0.0450 26.4)",
+          "oklch(95% 0.0150 26.4)"
+        ]
+      },
+      "dialog-overlay": {
+        "role": "neutral",
+        "displayName": "Dialog Overlay"
+      },
+      "mobile-nav-active": {
+        "role": "neutral",
+        "displayName": "Mobile Nav Active",
+        "tonalRamp": [
+          "oklch(15% 0.0150 269.1)",
+          "oklch(26% 0.0182 269.1)",
+          "oklch(38% 0.0182 269.1)",
+          "oklch(50% 0.0182 269.1)",
+          "oklch(62% 0.0182 269.1)",
+          "oklch(74% 0.0182 269.1)",
+          "oklch(86% 0.0182 269.1)",
+          "oklch(95% 0.0150 269.1)"
+        ]
+      },
+      "glucose-line": {
+        "role": "neutral",
+        "displayName": "Glucose Line",
+        "tonalRamp": [
+          "oklch(15% 0.0150 263.5)",
+          "oklch(26% 0.0313 263.5)",
+          "oklch(38% 0.0313 263.5)",
+          "oklch(50% 0.0313 263.5)",
+          "oklch(62% 0.0313 263.5)",
+          "oklch(74% 0.0313 263.5)",
+          "oklch(86% 0.0313 263.5)",
+          "oklch(95% 0.0150 263.5)"
+        ]
       }
     },
     "typographyMeta": {
@@ -58,7 +324,7 @@
     "shadows": [
       {
         "name": "toast",
-        "value": "0 8px 25px #25311c20",
+        "value": "0 8px 25px #293b6120",
         "purpose": "Transient success toast only; panels remain flat."
       }
     ],
@@ -92,6 +358,71 @@
         "name": "reduced-motion",
         "value": "animation: none !important; transition: none !important; scroll-behavior: auto !important",
         "purpose": "Applied to all elements and pseudo-elements when reduced motion is requested."
+      },
+      {
+        "name": "popup-entry",
+        "value": "200ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Calendar and slot content entrance."
+      },
+      {
+        "name": "popup-exit",
+        "value": "130ms ease-in",
+        "purpose": "Calendar and slot content exit."
+      },
+      {
+        "name": "calendar-month",
+        "value": "180ms",
+        "purpose": "DayPicker month animation."
+      },
+      {
+        "name": "dialog-entry",
+        "value": "260ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Dialog content entrance."
+      },
+      {
+        "name": "dialog-exit",
+        "value": "150ms ease",
+        "purpose": "Dialog content and overlay exit."
+      },
+      {
+        "name": "overlay-entry",
+        "value": "220ms ease",
+        "purpose": "Dialog overlay fade."
+      },
+      {
+        "name": "welcome-minimum",
+        "value": "1400ms",
+        "purpose": "Minimum signup/login welcome duration; journal readiness also required."
+      },
+      {
+        "name": "welcome-exit",
+        "value": "180ms ease",
+        "purpose": "Welcome fade after readiness."
+      },
+      {
+        "name": "thought-rotation",
+        "value": "4500ms",
+        "purpose": "Encouragement change while the tab is visible."
+      },
+      {
+        "name": "welcome-petals",
+        "value": "1800ms cubic-bezier(0.16, 1, 0.3, 1) infinite",
+        "purpose": "Emblem breathing with 140ms petal staggering."
+      },
+      {
+        "name": "welcome-dots",
+        "value": "1200ms ease-in-out infinite",
+        "purpose": "Four progress dots with 140ms staggering."
+      },
+      {
+        "name": "view-exit",
+        "value": "130ms ease",
+        "purpose": "Old journal content transition."
+      },
+      {
+        "name": "view-entry",
+        "value": "210ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "New journal view transition; content entrance fallback is 180ms."
       }
     ],
     "breakpoints": [
@@ -124,7 +455,7 @@
       "refersTo": "button-primary",
       "description": "Implemented action variant with the shared keyboard focus and disabled treatment.",
       "html": "<button class=\"ds-primary\">Save reading</button>",
-      "css": ".ds-primary{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:var(--olive,#455638);color:white;border-color:transparent;}.ds-primary:hover:not(:disabled){background:var(--olive-hover,#35462a);}.ds-primary:focus-visible{outline:3px solid var(--focus,#7b8f4d);outline-offset:4px;}.ds-primary:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none;}}"
+      "css": ".ds-primary{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:var(--accent,#4d67c2);color:white;border-color:transparent;}.ds-primary:hover:not(:disabled){background:var(--accent-hover,#3c54a5);}.ds-primary:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}.ds-primary:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none;}}"
     },
     {
       "name": "Secondary Button",
@@ -132,7 +463,7 @@
       "refersTo": "button-secondary",
       "description": "Implemented action variant with the shared keyboard focus and disabled treatment.",
       "html": "<button class=\"ds-secondary\">Keep reading</button>",
-      "css": ".ds-secondary{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:white;color:var(--ink,#252e25);border-color:var(--line,#e3e7dd);}.ds-secondary:hover:not(:disabled){background:var(--panel,#f0f3e9);}.ds-secondary:focus-visible{outline:3px solid var(--focus,#7b8f4d);outline-offset:4px;}.ds-secondary:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none;}}"
+      "css": ".ds-secondary{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:white;color:var(--ink,#29364d);border-color:var(--line,#e1e6f0);}.ds-secondary:hover:not(:disabled){background:var(--panel,#edf2fc);}.ds-secondary:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}.ds-secondary:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none;}}"
     },
     {
       "name": "Danger Button",
@@ -140,15 +471,15 @@
       "refersTo": "button-danger",
       "description": "Implemented action variant with the shared keyboard focus and disabled treatment.",
       "html": "<button class=\"ds-danger\">Delete reading</button>",
-      "css": ".ds-danger{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:var(--error,#a2362e);color:white;border-color:transparent;}.ds-danger:hover:not(:disabled){background:var(--olive-hover,#35462a);}.ds-danger:focus-visible{outline:3px solid var(--focus,#7b8f4d);outline-offset:4px;}.ds-danger:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-danger{transition:none;}}"
+      "css": ".ds-danger{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 20px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background-color 180ms,border-color 180ms,color 180ms,box-shadow 180ms;background:var(--error,#a2362e);color:white;border-color:transparent;}.ds-danger:hover:not(:disabled){background:#862b27;}.ds-danger:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}.ds-danger:disabled{opacity:.5;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-danger{transition:none;}}"
     },
     {
       "name": "Labelled Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "Visible label, muted placeholder, olive focus and inline validation support.",
-      "html": "<div class=\"ds-field\"><label for=\"ds-date\">Date</label><input id=\"ds-date\" type=\"text\" placeholder=\"Select a date\"></div>",
-      "css": ".ds-field{font-family:'Manrope Variable',sans-serif;display:grid;gap:8px;color:var(--ink,#252e25);}.ds-field label{font-size:12px;font-weight:750;}.ds-field input{font-family:'Manrope Variable',sans-serif;min-width:0;min-height:46px;padding:12px 13px;background:white;border:1px solid var(--field-line,#d7ddd0);border-radius:8px;color:var(--ink,#252e25);font-size:14px;transition:border-color 180ms;}.ds-field input::placeholder{color:var(--muted,#626d60);}.ds-field input:focus{border-color:var(--olive,#455638);}.ds-field input:focus-visible{outline:3px solid var(--focus,#7b8f4d);outline-offset:4px;}.ds-field input[aria-invalid=\"true\"]{border-color:var(--error,#a2362e);}@media(prefers-reduced-motion:reduce){.ds-field input{transition:none;}}"
+      "description": "Visible label, muted placeholder, cornflower focus and inline validation support.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-email\">Email address</label><input id=\"ds-email\" type=\"email\" placeholder=\"you@example.com\"></div>",
+      "css": ".ds-field{font-family:'Manrope Variable',sans-serif;display:grid;gap:8px;color:var(--ink,#29364d);}.ds-field label{font-size:12px;font-weight:750;}.ds-field input{font-family:'Manrope Variable',sans-serif;min-width:0;min-height:46px;padding:12px 13px;background:white;border:1px solid #d8e1f0;border-radius:8px;color:var(--ink,#29364d);font-size:14px;transition:border-color 180ms;}.ds-field input::placeholder{color:var(--muted,#5d6c83);}.ds-field input:focus{border-color:var(--accent,#4d67c2);}.ds-field input:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}.ds-field input[aria-invalid=\"true\"]{border-color:var(--error,#a2362e);}@media(prefers-reduced-motion:reduce){.ds-field input{transition:none;}}"
     },
     {
       "name": "Journal Panel",
@@ -156,15 +487,15 @@
       "refersTo": "panel",
       "description": "Flat outlined container for readings and reports.",
       "html": "<section class=\"ds-panel\"><h2>Your daily readings</h2><p>Record a reading to begin your journal.</p></section>",
-      "css": ".ds-panel{font-family:'Manrope Variable',sans-serif;background:white;border:1px solid var(--line,#e3e7dd);border-radius:14px;padding:24px;color:var(--ink,#252e25);}.ds-panel h2{margin:0;font-size:16px;line-height:1.5;letter-spacing:-.025em;font-weight:750;}.ds-panel p{margin:14px 0 0;font-size:12px;line-height:1.8;color:var(--muted,#626d60);}"
+      "css": ".ds-panel{font-family:'Manrope Variable',sans-serif;background:white;border:1px solid var(--line,#e1e6f0);border-radius:14px;padding:24px;color:var(--ink,#29364d);}.ds-panel h2{margin:0;font-size:16px;line-height:1.5;letter-spacing:-.025em;font-weight:750;}.ds-panel p{margin:14px 0 0;font-size:12px;line-height:1.8;color:var(--muted,#5d6c83);}"
     },
     {
       "name": "Desktop Navigation",
       "kind": "nav",
       "refersTo": "navigation-active",
-      "description": "Selected rail destination with an olive completion dot.",
-      "html": "<nav aria-label=\"Journal navigation\"><button class=\"ds-nav\" aria-current=\"page\">Daily journal<span class=\"ds-dot\" aria-hidden=\"true\"></span></button></nav>",
-      "css": ".ds-nav{font-family:'Manrope Variable',sans-serif;display:flex;align-items:center;gap:12px;width:100%;min-height:47px;padding:0 14px;border:0;border-radius:8px;background:var(--nav-active,#e4eacf);color:var(--olive,#455638);font-size:13px;font-weight:750;text-align:left;cursor:pointer;transition:background-color 180ms;}.ds-dot{margin-left:auto;height:5px;width:5px;border-radius:50%;background:var(--olive,#455638);}.ds-nav:hover{background:#e9eddf;}.ds-nav:focus-visible{outline:3px solid var(--focus,#7b8f4d);outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-nav{transition:none;}}"
+      "description": "Selected rail destination with an cornflower destination dot.",
+      "html": "<nav aria-label=\"Journal navigation\"><button class=\"ds-nav\" aria-current=\"page\">Overview<span class=\"ds-dot\" aria-hidden=\"true\"></span></button></nav>",
+      "css": ".ds-nav{font-family:'Manrope Variable',sans-serif;display:flex;align-items:center;gap:12px;width:100%;min-height:47px;padding:0 14px;border:0;border-radius:8px;background:#e1e9ff;color:var(--accent,#4d67c2);font-size:13px;font-weight:750;text-align:left;cursor:pointer;transition:background-color 180ms;}.ds-dot{margin-left:auto;height:5px;width:5px;border-radius:50%;background:var(--accent,#4d67c2);}.ds-nav:hover{background:#e6edfc;}.ds-nav:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-nav{transition:none;}}"
     },
     {
       "name": "Completion Badge",
@@ -172,14 +503,28 @@
       "refersTo": "badge-complete",
       "description": "Noninteractive daily completion count; do not imply a clinical status.",
       "html": "<span class=\"ds-badge\">4 of 4 recorded</span>",
-      "css": ".ds-badge{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:5px;background:var(--lime,#e6edc8);color:var(--olive,#455638);font-size:11px;font-weight:650;white-space:nowrap;}"
+      "css": ".ds-badge{font-family:'Manrope Variable',sans-serif;display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:5px;background:var(--accent-soft,#e4ebff);color:var(--accent,#4d67c2);font-size:11px;font-weight:650;white-space:nowrap;}"
+    },
+    {
+      "name": "Calendar Trigger",
+      "kind": "custom",
+      "description": "Selected date opens the animated calendar popover; future dates are unavailable.",
+      "html": "<button class=\"ds-calendar\" type=\"button\" aria-haspopup=\"dialog\"><span>11 Nov 2026</span><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M16 3v4M8 3v4M3 11h18\"/></svg></button>",
+      "css": ".ds-calendar{font-family:'Manrope Variable',sans-serif;min-height:46px;padding:12px 13px;background:var(--surface,#fff);border:1px solid #d8e1f0;border-radius:8px;color:var(--ink,#29364d);font-size:13px;cursor:pointer;transition:border-color 180ms;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;}.ds-calendar:hover,.ds-calendar[aria-expanded=\"true\"]{border-color:var(--accent,#4d67c2);}.ds-calendar:focus-visible{outline:3px solid #6f86cf;outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-calendar{transition:none;}}"
+    },
+    {
+      "name": "Glucose Entry",
+      "kind": "input",
+      "description": "Large numeric entry gains an accent underline on manual focus; no automatic focus jump.",
+      "html": "<label class=\"ds-glucose-label\" for=\"ds-glucose\">Blood glucose</label><div class=\"ds-glucose\"><input id=\"ds-glucose\" inputmode=\"numeric\" value=\"126\" aria-label=\"Blood glucose\"><span>mg/dl</span></div>",
+      "css": ".ds-glucose-label{font:750 12px \"Manrope Variable\",sans-serif;color:var(--ink,#29364d);}.ds-glucose{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid #cfdaef;padding-bottom:8px;}.ds-glucose input{min-width:0;width:100%;border:0;background:transparent;padding:4px 0;font:650 43px/1.4 \"Manrope Variable\",sans-serif;color:var(--ink,#29364d);}.ds-glucose span{font:12px \"Manrope Variable\",sans-serif;color:var(--muted,#5d6c83);}.ds-glucose:focus-within{border-color:var(--accent,#4d67c2);box-shadow:0 2px 0 var(--accent,#4d67c2);}.ds-glucose input:focus-visible{outline:none;}"
     }
   ],
   "narrative": {
     "northStar": "The Calm Journal",
-    "overview": "A light, quiet place to record personal readings, with confident typography and a restrained natural palette. Off-white space, olive actions, pale lime completion cues and thin dividers establish a compact, clear hierarchy. Motion marks loading and successful actions without competing with the data. This is a descriptive name for the implemented system.",
+    "overview": "This descriptive name captures the implemented interface: a light, quiet place to record personal readings, with confident typography and a restrained cool palette. It describes the existing system rather than introducing a new brand direction.\n\nThe visual character comes from blue-white space, cornflower actions, powder-blue completion cues and thin dividers. Information is compact but clearly grouped; large reading values and bold headings establish hierarchy without decorative illustrations. Motion marks loading and successful actions without competing with the data.",
     "keyCharacteristics": [
-      "Light surfaces with muted green undertones.",
+      "Light surfaces with cool blue undertones.",
       "Self-hosted Manrope with strong heading and numeric hierarchy.",
       "Border-based panels and gently rounded controls.",
       "Responsive navigation, visible labels and explicit feedback."
@@ -187,24 +532,29 @@
     "rules": [
       {
         "name": "The Readable Feedback Rule",
-        "body": "Keep meaning visible in words and values; green is not a glucose health classification.",
+        "body": "Keep meaning visible in words and values; blue is not a glucose health classification, and errors include text rather than relying on color alone.",
         "section": "colors"
       },
       {
         "name": "The Quiet Surface Rule",
-        "body": "Preserve border-based panels; reserve the existing shadow for transient toast feedback.",
+        "body": "Preserve the border-based panel vocabulary; reserve the existing shadow for transient notification feedback.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do preserve dates, units, labels, focus outlines and reduced motion.",
-      "Do use inline deletion confirmation.",
-      "Do verify the final CSS cascade and responsive navigation."
+      "Do use the frontmatter tokens and check the final CSS cascade when extending existing components.",
+      "Do keep dates, slot names, units, empty states and error messages explicit.",
+      "Do preserve tabular numerals, visible labels, keyboard focus and reduced-motion behavior.",
+      "Do keep deletion confirmation inline with the affected reading.",
+      "Do verify both the one-column dashboard and safe-area-aware mobile navigation."
     ],
     "donts": [
-      "Don't add panel shadows or decorative gradients.",
-      "Don't replace missing readings with zeros.",
-      "Don't introduce unsupported medical targets or health-status colors."
+      "Don't add panel shadows, oversized pill buttons or decorative gradients to this flat system.",
+      "Don't replace the cornflower accent with black or reintroduce the rejected natural green accent.",
+      "Don't autofocus glucose after date changes or replace mounted journal data with loading placeholders during a background refresh.",
+      "Don't replace missing readings with zeros or omit units from recorded glucose values.",
+      "Don't introduce medical targets, health-status colors or treatment claims unsupported by the product.",
+      "Don't shrink ordinary mobile form text below the implemented readable size or hide labels in placeholders."
     ]
   }
 }

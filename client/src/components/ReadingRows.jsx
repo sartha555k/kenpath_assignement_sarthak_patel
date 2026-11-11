@@ -11,6 +11,7 @@ export function ReadingRows({
   onAdd,
   showDates = false,
   daily = false,
+  grouped = false,
 }) {
   const [deleting, setDeleting] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -51,7 +52,7 @@ export function ReadingRows({
               <div className="slot-description">
                 <strong>{slot.name}</strong>
                 <span>
-                  {showDates && reading
+                  {showDates && !grouped && reading
                     ? formatDate(reading.date)
                     : slot.id === "morning"
                       ? "Fasting"

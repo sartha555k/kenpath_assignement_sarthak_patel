@@ -17,3 +17,11 @@ They contain no patient data. Captured on 11 November 2026.
 | Signup | [View](signup-desktop.jpg) | |
 | Dashboard | [View](dashboard-desktop.jpg) | [View](dashboard-mobile.jpg) |
 | Reports | [View](reports-desktop.jpg) | [View](reports-mobile.jpg) |
+| Grouped history | [View](history-desktop.jpg) | [View](history-mobile.jpg) |
+| Contextual reading form | [View](reading-form-desktop.jpg) | [View](reading-form-mobile.jpg) |
+| Calendar | [View](calendar-desktop.jpg) | |
+| Welcome | [View](welcome-desktop.jpg) | |
+
+The open slot menu is covered by component tests and browser interaction checks.
+The screenshot tool dismissed that transient menu during capture, so a misleading
+partial-animation image is intentionally excluded.
