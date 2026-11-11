@@ -58,7 +58,7 @@ function LoadingJournal() {
   );
 }
 
-export function Dashboard({ user, onLogout }) {
+export function Dashboard({ user, onLogout, onReady }) {
   const [view, setView] = useState("overview");
   const [date, setDate] = useState(today());
   const [reports, setReports] = useState(null);
@@ -96,9 +96,10 @@ export function Dashboard({ user, onLogout }) {
         loadedDate.current = date;
         setReports(data.reports);
         setMonthReadings(readings);
+        onReady?.();
       })
       .catch((failure) => {
-        if (failure.name !== "AbortError") setError(failure.message);
+        if (failure.name !== "AbortError") { setError(failure.message); onReady?.(); }
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
