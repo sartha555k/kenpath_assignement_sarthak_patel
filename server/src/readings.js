@@ -13,12 +13,16 @@ export function readingsRouter(db, config) {
     const page = positiveInteger(req.query.page ?? '1', 'page', 1000000);
     const limit = positiveInteger(req.query.limit ?? '20', 'limit', 100);
     const date = req.query.date === undefined ? null : validateDate(req.query.date, config.timezone);
+    const from = req.query.from === undefined ? null : validateDate(req.query.from, config.timezone);
+    const to = req.query.to === undefined ? null : validateDate(req.query.to, config.timezone);
+    if (from && to && from > to) throw new AppError(400, 'Start date must be on or before end date.', 'from');
+    const filters = 'user_id = $1 AND ($2::date IS NULL OR date = $2::date) AND ($3::date IS NULL OR date >= $3::date) AND ($4::date IS NULL OR date <= $4::date)';
     const { rows } = await db.query(
-      `SELECT ${columns} FROM readings WHERE user_id = $1 AND ($2::date IS NULL OR date = $2::date)
+      `SELECT ${columns} FROM readings WHERE ${filters}
        ORDER BY date DESC, CASE slot WHEN 'morning' THEN 1 WHEN 'after_breakfast' THEN 2 WHEN 'after_lunch' THEN 3 ELSE 4 END
-       LIMIT $3 OFFSET $4`, [req.userId, date, limit, (page - 1) * limit],
+       LIMIT $5 OFFSET $6`, [req.userId, date, from, to, limit, (page - 1) * limit],
     );
-    const count = await db.query('SELECT count(*)::int AS total FROM readings WHERE user_id = $1 AND ($2::date IS NULL OR date = $2::date)', [req.userId, date]);
+    const count = await db.query(`SELECT count(*)::int AS total FROM readings WHERE ${filters}`, [req.userId, date, from, to]);
     const total = count.rows[0].total;
     res.json({ readings: rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
   });

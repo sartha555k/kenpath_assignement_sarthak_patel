@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AuthScreen } from './components/AuthScreen.jsx';
 import { Brand } from './components/Brand.jsx';
 import { api, session } from './lib/api.js';
+import { Dashboard } from './components/Dashboard.jsx';
 
 export function App() {
   const [user, setUser] = useState(null);
@@ -31,5 +32,5 @@ export function App() {
   if (loading) return <main className="boot-screen"><Brand /><p role="status">Opening your journal…</p></main>;
   if (connectionError) return <main className="boot-screen"><Brand /><p role="alert">{connectionError}</p><button className="button" onClick={() => setRetry(retry + 1)}>Try again</button><button className="text-button" onClick={logout}>Back to login</button></main>;
   if (!user) return <AuthScreen onAuthenticated={(account) => { setUser(account); setMessage(''); }} sessionMessage={message} />;
-  return <main className="boot-screen"><Brand /><h1>Hello, {user.name}.</h1><p>You’re logged in to your journal.</p><button className="button secondary" onClick={logout}>Log out</button></main>;
+  return <Dashboard user={user} onLogout={logout} />;
 }
