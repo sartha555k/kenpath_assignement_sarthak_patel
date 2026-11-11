@@ -30,7 +30,9 @@ export function validateDate(value, timezone) {
 export function validateReading(body, timezone) {
   const { date, slot, value } = body || {};
   validateDate(date, timezone);
-  if (!Object.hasOwn(SLOTS, slot)) throw new AppError(400, 'Please select one of the four reading slots.', 'slot');
+  if (typeof slot !== 'string' || !Object.hasOwn(SLOTS, slot)) {
+    throw new AppError(400, 'Please select one of the four reading slots.', 'slot');
+  }
   if (value === undefined || value === null || value === '') throw new AppError(400, 'Please enter a glucose value.', 'value');
   if (!Number.isInteger(value) || value < 40 || value > 600) {
     throw new AppError(400, 'Value must be a whole number between 40 and 600 mg/dl.', 'value');
