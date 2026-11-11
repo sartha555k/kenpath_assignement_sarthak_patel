@@ -10,7 +10,7 @@ import {
 import { Brand } from "./Brand.jsx";
 import { api, session } from "../lib/api.js";
 
-export function AuthScreen({ onAuthenticated, sessionMessage = "" }) {
+export function AuthScreen({ onAuthenticated, onAuthenticating, sessionMessage = "" }) {
   const [mode, setMode] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -47,6 +47,7 @@ export function AuthScreen({ onAuthenticated, sessionMessage = "" }) {
       }
     }
     setBusy(true);
+    onAuthenticating?.(true);
     try {
       const result = await api(`/auth/${demo ? "login" : mode}`, {
         method: "POST",
@@ -56,6 +57,7 @@ export function AuthScreen({ onAuthenticated, sessionMessage = "" }) {
       onAuthenticated(result.user);
     } catch (failure) {
       setError(failure);
+      onAuthenticating?.(false);
     } finally {
       setBusy(false);
     }
