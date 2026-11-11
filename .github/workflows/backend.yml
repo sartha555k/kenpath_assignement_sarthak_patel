@@ -47,7 +47,7 @@ jobs:
       JWT_SECRET: docker-ci-secret-only-not-for-production-12345
       # Exercises credential URL escaping in the API image entrypoint.
       POSTGRES_PASSWORD: 'docker-test:p@ss/with?reserved'
-      SMOKE_STATE_FILE: ${{ runner.temp }}/sweety-docker-state.json
+      SMOKE_STATE_FILE: /tmp/sweety-docker-state.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
