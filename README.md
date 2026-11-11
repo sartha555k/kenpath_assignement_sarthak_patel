@@ -97,26 +97,35 @@ Client settings (public at build time): `VITE_API_URL` defaults to `/api`;
 
 ## Frontend
 
-- Light, minimalist journal with locally served Manrope type and Lucide icons.
+- Light, minimalist cornflower-blue journal with locally served Manrope type and Lucide icons.
 - Signup/login, password visibility control, demo login and logout.
-- Date navigation, four daily slots, add/edit form and inline delete confirmation.
+- Animated calendar and time-slot popups, four daily slots, add/edit form and inline delete confirmation.
 - Daily summaries and month-to-date line chart using actual readings.
-- Paginated reading history and all three required report periods.
+- History grouped by date, with complete days kept together across pages, and all three required report periods.
 - Inline validation, retryable connection errors, empty states and loading placeholders.
 - Session tokens live in `sessionStorage` and are verified on reload. Expired
   sessions return to login. Closing the tab ends the browser session.
 - Responsive sidebar on desktop and bottom navigation on mobile; visible keyboard
   focus, labelled controls, screen-reader feedback and reduced-motion support.
+- Report/history add and edit actions open an animated dialog without navigating
+  away. Closing it returns focus to the original action.
+- Saving refreshes reports in the background without replacing the journal with
+  loading placeholders. Changing dates never autofocuses the glucose input.
+- Signin/signup shows an animated welcome while the journal loads, with rotating
+  encouragement. Invalid credentials return to the form with the server error.
 
 The chart plots individual readings in chronological slot order (not continuous
 monitoring). It includes the entire selected month through the selected day,
 fetching a second page when there are more than 100 readings.
+Tap a point (or the nearby chart area) to see the reading's date, slot and value.
+Keyboard users can focus the chart and use Left/Right, Home and End to inspect readings.
 
-Visual references: the warm, restrained palette and clear hierarchy in
+Initial visual references: the restrained composition and clear hierarchy in
 [Oura Ring on Awwwards](https://www.awwwards.com/sites/oura-ring) and the
 [Awwwards clean collection](https://www.awwwards.com/websites/clean/).
 The requested award MCP was not available; public reference pages were used.
 No third-party brand assets were copied.
+The initial olive palette was replaced with cornflower blue following user feedback.
 
 ### Screenshots
 
@@ -127,6 +136,10 @@ Captured using synthetic demo data; these contain no real patient information.
 | [Login](docs/screenshots/login-desktop.jpg) | [Login](docs/screenshots/login-mobile.jpg) |
 | [Dashboard](docs/screenshots/dashboard-desktop.jpg) | [Dashboard](docs/screenshots/dashboard-mobile.jpg) |
 | [Reports](docs/screenshots/reports-desktop.jpg) | [Reports](docs/screenshots/reports-mobile.jpg) |
+| [Grouped history](docs/screenshots/history-desktop.jpg) | [Grouped history](docs/screenshots/history-mobile.jpg) |
+| [Contextual reading form](docs/screenshots/reading-form-desktop.jpg) | [Contextual reading form](docs/screenshots/reading-form-mobile.jpg) |
+| [Calendar](docs/screenshots/calendar-desktop.jpg) | |
+| [Welcome animation](docs/screenshots/welcome-desktop.jpg) | |
 | [Signup](docs/screenshots/signup-desktop.jpg) | |
 
 ## API
@@ -162,6 +175,11 @@ Readings are ordered by date descending and then by slot in daily order.
 Optional inclusive `from=YYYY-MM-DD` and `to=YYYY-MM-DD` filters support the
 monthly chart. Invalid/future dates or a start date after the end date return 400.
 All date filters and pagination remain scoped to the authenticated user.
+For grouped history, use `?groupBy=date&page=1&limit=7`. In this mode, `limit`
+counts distinct dates and all readings for each selected date are returned.
+`pagination.total`/`totalPages` count dates, `totalReadings` counts readings, and
+`unit` is `dates`. Without grouping, `unit` is `readings` and pagination retains
+its original reading-based behavior.
 
 Example report response:
 
@@ -245,6 +263,9 @@ add/edit/delete with live report updates, history pagination and empty reports.
 Responsive checks covered widths 320, 390, 768, 1280 and 1440 pixels.
 Browser QA used the real Express API backed by disposable PGlite data because no
 standalone PostgreSQL server was installed locally; CI uses PostgreSQL 17.
+Regression tests also cover focus stability, mounted rows during refresh,
+context-preserving report entry, complete-day pagination, date grouping, chart
+click/keyboard details, calendar selection and rotating welcome thoughts.
 
 ## Git workflow
 
@@ -261,6 +282,11 @@ and is merged back with a merge commit to preserve its history:
 - `feat/frontend-authentication`
 - `feat/frontend-dashboard`
 - `feat/frontend-quality`
+- `fix/reading-focus-and-refresh`
+- `feat/grouped-history-and-chart-details`
+- `feat/smooth-reading-controls`
+- `feat/welcome-animation`
+- `feat/blue-theme-and-motion-polish`
 
 New features use `feat/…`; bug fixes use `fix/…`. Future changes can use pull
 requests for review before merging. Initial backend feature branches are merged
@@ -281,8 +307,9 @@ locally with their histories preserved.
   refresh tokens, server-side revocation and password recovery are future improvements.
 - HTTPS and an appropriate production database connection are deployment concerns.
   The Docker service is a local development database.
-- Frontend date controls use the browser's native calendar; formatting follows the
-  browser locale. Stored/API dates always use `YYYY-MM-DD`.
+- Frontend calendars use DayPicker with Radix popovers; slot menus and contextual
+  dialogs use Radix. Stored/API dates always use `YYYY-MM-DD`. Calendar selection
+  converts local calendar components explicitly, avoiding UTC date shifts.
 - Report numbers are descriptive; the app does not assign clinical target ranges
   or recommend treatment.
 - With more time: patient timezone settings, token rotation, structured logging,
