@@ -39,7 +39,8 @@ test('reading validation, duplicate slots, four-per-day cap and editing conflict
     const { authorization } = await register();
     for (const invalid of [
       { value: undefined }, { value: null }, { value: '' }, { value: 39 }, { value: 601 },
-      { value: 100.5 }, { value: '100' }, { slot: 'other' }, { date: '2099-01-01' },
+      { value: 100.5 }, { value: '100' }, { slot: 'other' }, { slot: ['morning'] },
+      { slot: { toString: 'morning' } }, { date: '2099-01-01' },
       { date: '2023-02-29' }, { date: '2024-04-31' }, { date: '01/01/2024' },
     ]) {
       const result = await api.post('/api/readings').set('Authorization', authorization).send({ ...reading, ...invalid });
