@@ -8,10 +8,90 @@ daily, month-to-date and previous-month reports.
 
 ## Requirements
 
-- Node.js 22.12 or newer and npm.
-- PostgreSQL 17, or Docker with Compose to run the included database service.
+- **Docker setup:** Docker Engine/Desktop with Docker Compose v2. No host Node.js
+  or PostgreSQL installation is needed.
+- **Manual setup:** Node.js 22.12 or newer, npm, and PostgreSQL 17.
 
-## Install and run
+## Run the entire app with Docker
+
+After cloning this repository:
+
+```sh
+cp .env.example .env
+openssl rand -hex 32
+```
+
+Replace `JWT_SECRET` in the root `.env` with the generated value. The placeholder
+is intentionally rejected by the API. Then start the whole application:
+
+```sh
+docker compose up --build -d --wait
+```
+
+Open **http://localhost:8080**. Compose starts these services in order:
+
+1. `db`: PostgreSQL 17 with a persistent named volume.
+2. `migrate`: applies pending SQL migrations once and exits successfully.
+3. `api`: Express with production dependencies, running as the non-root Node user.
+4. `web`: Nginx serving the production React build and forwarding `/api` to `api`.
+
+The API starts only after the database is healthy and migrations succeed; the web
+service waits for the API health check. Frontend requests use the same origin,
+so no browser-visible container hostnames or separate API port are needed.
+
+Add the optional demo account and readings explicitly:
+
+```sh
+docker compose exec -e NODE_ENV=development api node server/scripts/seed.js
+```
+
+The API container normally runs with `NODE_ENV=production`. The override applies
+only to this demo seed command; the running API keeps its production setting.
+Seeding is not automatic and does not overwrite existing readings.
+
+Useful commands:
+
+```sh
+docker compose ps
+docker compose logs -f api web
+docker compose logs migrate
+docker compose down
+```
+
+`down` stops/removes containers while retaining the database volume. Starting the
+stack again restores the same readings. Adding `--volumes` would delete that data;
+the disposable CI job uses that option only for its own test project.
+
+Docker settings are listed in the root [.env.example](.env.example):
+
+| Variable | Purpose |
+| --- | --- |
+| `JWT_SECRET` | Required random signing secret, at least 32 characters |
+| `JWT_EXPIRES_IN` | Token lifetime, default `1d` |
+| `POSTGRES_USER` | Database user, default `sweety` |
+| `POSTGRES_PASSWORD` | Local database password, default `sweety` |
+| `POSTGRES_DB` | Database name, default `sweety` |
+| `WEB_PORT` | Host web port, default `8080` |
+| `DB_PORT` | Host PostgreSQL port, default `5432` |
+| `APP_TIMEZONE` | Shared API/frontend timezone, default `Asia/Kolkata` |
+| `CLIENT_ORIGIN` | Frontend origin, default `http://localhost:8080` |
+
+For a busy port, change `WEB_PORT` or `DB_PORT`; update `CLIENT_ORIGIN` if the web
+origin changes. Rebuild after changing `APP_TIMEZONE` because the frontend setting
+is compiled into its bundle. Database credentials initialize a new volume; changing
+the variables later does not change the credentials already stored in PostgreSQL.
+The entrypoint encodes credentials safely when constructing the database URL.
+
+Docker reads root `.env` values through Compose. It does not copy `server/.env`
+or `client/.env` into images. JWT/database secrets are runtime settings; the React
+build receives only `/api` and the timezone. The Docker database is separate from
+the temporary PGlite database used during the earlier local UI testing session.
+
+This Compose configuration binds web and database ports to localhost for local
+review. Public deployment still needs the hosting platform's networking and TLS
+configuration.
+
+## Manual install and run
 
 ```sh
 git clone https://github.com/sartha555k/kenpath_assignement_sarthak_patel.git
@@ -256,6 +336,14 @@ needs permission to create schemas. Use a dedicated test database.
 GitHub Actions runs this suite against PostgreSQL 17 and also exercises migration
 reruns, the seed script, frontend tests and the production frontend build.
 
+A separate Docker job builds both images, starts the full Compose stack, checks
+frontend assets and API requests through Nginx, reruns migrations, seeds the demo,
+and verifies authentication, reading CRUD, validation, ownership and reports.
+It then removes/recreates containers **without** deleting the volume and checks
+that a saved reading and its authentication token still work. Docker is not
+installed on the development machine; container execution is verified in CI.
+The smoke checks live in [scripts/docker-smoke.mjs](scripts/docker-smoke.mjs).
+
 Frontend tests cover registration, login errors, required/range/integer validation,
 duplicate slots, future dates, server validation feedback and editing a slot
 without conflicting with itself. Browser QA also exercised signup/login,
@@ -287,6 +375,7 @@ and is merged back with a merge commit to preserve its history:
 - `feat/smooth-reading-controls`
 - `feat/welcome-animation`
 - `feat/blue-theme-and-motion-polish`
+- `feat/docker-full-stack`
 
 New features use `feat/…`; bug fixes use `fix/…`. Future changes can use pull
 requests for review before merging. Initial backend feature branches are merged
@@ -306,7 +395,8 @@ locally with their histories preserved.
 - Tokens expire after one day by default. Logout will discard the frontend token;
   refresh tokens, server-side revocation and password recovery are future improvements.
 - HTTPS and an appropriate production database connection are deployment concerns.
-  The Docker service is a local development database.
+  The Compose stack runs PostgreSQL, migrations, the API and the built frontend
+  locally; public deployment needs hosting-specific configuration.
 - Frontend calendars use DayPicker with Radix popovers; slot menus and contextual
   dialogs use Radix. Stored/API dates always use `YYYY-MM-DD`. Calendar selection
   converts local calendar components explicitly, avoiding UTC date shifts.
