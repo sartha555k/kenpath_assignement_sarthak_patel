@@ -1,3 +1,4 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   LogOut,
   Plus,
   RefreshCw,
+  X,
 } from "lucide-react";
 import { Brand } from "./Brand.jsx";
 import { DatePicker } from "./DatePicker.jsx";
@@ -65,6 +67,9 @@ export function Dashboard({ user, onLogout }) {
   const [error, setError] = useState("");
   const [revision, setRevision] = useState(0);
   const [editing, setEditing] = useState(null);
+  const [composerOpen, setComposerOpen] = useState(false);
+  const [composerBusy, setComposerBusy] = useState(false);
+  const composerTitle = useRef(null);
   const [initialSlot, setInitialSlot] = useState("");
   const [formVersion, setFormVersion] = useState(0);
   const [focusRequest, setFocusRequest] = useState(0);
@@ -150,13 +155,13 @@ export function Dashboard({ user, onLogout }) {
     window.scrollTo({ top: 0, behavior: "instant" });
   }
   function openForm(reading = null, slot = "") {
-    if (view === "history" || view === "reports") setView("overview");
+    if (view !== "overview") setComposerOpen(true);
     if (reading && reading.date !== date) setDate(reading.date);
     setEditing(reading);
     setInitialSlot(slot);
     setFormVersion((version) => version + 1);
     setFocusRequest((count) => count + 1);
-    requestAnimationFrame(() =>
+    if (view === "overview") requestAnimationFrame(() =>
       formRegion.current?.scrollIntoView({
         behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
           ? "instant"
@@ -178,6 +183,7 @@ export function Dashboard({ user, onLogout }) {
     );
     if (body.date !== date) selectDate(body.date);
     else resetForm();
+    setComposerOpen(false);
     setRevision((value) => value + 1);
   }
 
@@ -581,6 +587,13 @@ export function Dashboard({ user, onLogout }) {
           </button>
         ))}
       </nav>
+      <Dialog.Root open={composerOpen} onOpenChange={open=>{if(!composerBusy) setComposerOpen(open);}}>
+        <Dialog.Portal><Dialog.Overlay className="reading-dialog-overlay"/><Dialog.Content className="reading-dialog" onOpenAutoFocus={event=>{event.preventDefault();composerTitle.current?.focus();}} onEscapeKeyDown={event=>{if(composerBusy)event.preventDefault();}} onPointerDownOutside={event=>{if(composerBusy)event.preventDefault();}}>
+          <div className="dialog-heading"><Dialog.Title ref={composerTitle} tabIndex={-1}>{editing?'Update your journal':'A quick check-in.'}</Dialog.Title><Dialog.Close className="icon-button" disabled={composerBusy} aria-label="Close reading form"><X size={18}/></Dialog.Close></div>
+          <Dialog.Description className="dialog-description">{view==='reports'?'Keep your report open while you record a reading.':'Your history stays right where you left it.'}</Dialog.Description>
+          <ReadingForm key={`${date}-${formVersion}`} selectedDate={date} readings={dailyReadings} editing={editing} initialSlot={initialSlot} onSave={saveReading} onCancel={()=>{resetForm();setComposerOpen(false);}} onBusyChange={setComposerBusy}/>
+        </Dialog.Content></Dialog.Portal>
+      </Dialog.Root>
       {toast && (
         <div className="toast" role="status">
           <Check size={17} />

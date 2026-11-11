@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ArrowRight, Check, X } from "lucide-react";
 import { slots, today } from "../lib/dates.js";
+import { DateField } from './DateField.jsx';
+import { SlotSelect } from './SlotSelect.jsx';
 
 export function validateReading(fields, readings, selectedDate, editingId) {
   const date = new Date(`${fields.date}T12:00:00Z`);
@@ -48,6 +50,7 @@ export function ReadingForm({
   onSave,
   onCancel,
   focusRequest = 0,
+  onBusyChange,
 }) {
   const [fields, setFields] = useState({
     date: editing?.date || selectedDate,
@@ -74,6 +77,7 @@ export function ReadingForm({
       return;
     }
     setBusy(true);
+    onBusyChange?.(true);
     setError(null);
     try {
       await onSave({ ...fields, value: Number(fields.value) }, editing?.id);
@@ -82,6 +86,7 @@ export function ReadingForm({
       setError(failure);
     } finally {
       setBusy(false);
+      onBusyChange?.(false);
     }
   }
   const describedBy = (name) =>
@@ -117,37 +122,11 @@ export function ReadingForm({
         <fieldset disabled={busy}>
           <div className="field">
             <label htmlFor="reading-date">Date</label>
-            <input
-              type="date"
-              id="reading-date"
-              name="date"
-              value={fields.date}
-              max={today()}
-              onChange={change}
-              aria-invalid={error?.field === "date"}
-              aria-describedby={describedBy("date")}
-            />
+            <DateField id="reading-date" label="Date" value={fields.date} onChange={date=>{setFields(current=>({...current,date}));setError(null);}} invalid={error?.field === 'date'} describedBy={describedBy('date')} />
           </div>
           <div className="field">
             <label htmlFor="reading-slot">Time slot</label>
-            <select
-              id="reading-slot"
-              name="slot"
-              value={fields.slot}
-              onChange={change}
-              aria-invalid={error?.field === "slot"}
-              aria-describedby={describedBy("slot")}
-            >
-              <option value="" disabled>
-                Select a time slot
-              </option>
-              {slots.map((slot) => (
-                <option key={slot.id} value={slot.id}>
-                  {slot.name}
-                  {slot.id === "morning" ? " (fasting)" : ""}
-                </option>
-              ))}
-            </select>
+            <SlotSelect value={fields.slot} onChange={slot=>{setFields(current=>({...current,slot}));setError(null);}} invalid={error?.field === 'slot'} describedBy={describedBy('slot')} />
           </div>
           <div className="field glucose-field">
             <label htmlFor="reading-value">Glucose value</label>
