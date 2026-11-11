@@ -7,8 +7,8 @@ set -eu
 if [ -z "${DATABASE_URL:-}" ]; then
   DATABASE_URL="$(node --input-type=module -e '
     const url = new URL("postgresql://db:5432/");
-    url.username = process.env.POSTGRES_USER || "sweety";
-    url.password = process.env.POSTGRES_PASSWORD || "sweety";
+    url.username = encodeURIComponent(process.env.POSTGRES_USER || "sweety");
+    url.password = encodeURIComponent(process.env.POSTGRES_PASSWORD || "sweety");
     url.pathname = "/" + encodeURIComponent(process.env.POSTGRES_DB || "sweety");
     process.stdout.write(url.toString());
   ')"

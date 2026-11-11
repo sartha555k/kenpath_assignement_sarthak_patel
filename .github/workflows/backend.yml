@@ -46,7 +46,7 @@ jobs:
       COMPOSE_PROJECT_NAME: sweety-ci-${{ github.run_id }}-${{ github.run_attempt }}
       JWT_SECRET: docker-ci-secret-only-not-for-production-12345
       # Exercises credential URL escaping in the API image entrypoint.
-      POSTGRES_PASSWORD: 'docker-test:p@ss/with?reserved'
+      POSTGRES_PASSWORD: 'docker-test:p@ss/with?reserved%value'
       SMOKE_STATE_FILE: /tmp/sweety-docker-state.json
     steps:
       - uses: actions/checkout@v4
