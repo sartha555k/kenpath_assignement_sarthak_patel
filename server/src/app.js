@@ -9,6 +9,8 @@ import { reportsRouter } from './reports.js';
 export function createApp({ db, config }) {
   const app = express();
   app.disable('x-powered-by');
+  // Trust only the configured number of upstream proxies for client IPs.
+  app.set('trust proxy', config.trustProxyHops || false);
   app.use(helmet());
   app.use(cors({ origin: config.clientOrigin }));
   app.use(express.json({ limit: '16kb' }));

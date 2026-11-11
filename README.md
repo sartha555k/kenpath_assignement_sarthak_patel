@@ -205,6 +205,60 @@ along with a random `JWT_SECRET`, `NODE_ENV=production`, and the deployed fronte
 belong only on the server, never in frontend variables or Git. Neon hosts the
 database; deploy the Express API and React frontend separately.
 
+### Deploy the backend on Render
+
+The root [render.yaml](render.yaml) defines a free Node.js web service connected
+to your existing Neon database. It deploys `main` after CI passes, generates a
+JWT signing secret, checks `/api/health`, and applies migrations before each
+start. No seed runs during production deployment.
+
+1. In [Render](https://dashboard.render.com/), choose **New → Blueprint**, connect
+   GitHub, and select this repository and its `main` branch.
+2. Review the `sweety-api` service and supply the requested private values:
+   - `DATABASE_URL`: your Neon **direct** URL, with TLS enabled.
+   - `DATABASE_URL_POOLED`: your Neon **pooled** URL, with TLS enabled.
+   - `CLIENT_ORIGIN`: the frontend origin, without a trailing slash. For testing
+     the local frontend against the hosted API, use `http://127.0.0.1:5173`.
+3. Deploy the Blueprint. The logs should show migrations complete and the API
+   listening on Render's assigned port.
+4. Open `https://YOUR-SERVICE.onrender.com/api/health`; expect
+   `{"status":"ok"}`. The API root `/` intentionally returns a JSON 404.
+5. To use it from the local frontend, set
+   `VITE_API_URL=https://YOUR-SERVICE.onrender.com/api` in `client/.env` and
+   restart Vite. When the frontend is hosted, update `CLIENT_ORIGIN` in Render
+   to that site's origin and set `VITE_API_URL` before building the frontend.
+
+If creating a **Web Service** manually instead of using the Blueprint, use:
+
+| Setting | Value |
+| --- | --- |
+| Branch | `main` |
+| Language/runtime | Node |
+| Root directory | Leave blank (the npm workspace lockfile is at the repository root) |
+| Build command | `npm ci --omit=dev --workspace server` |
+| Start command | `npm run db:migrate && npm start` |
+| Health check path | `/api/health` |
+| Instance type | Free |
+| Auto-deploy | After CI Checks Pass |
+
+Set the three private values above plus `NODE_VERSION=22`, `NODE_ENV=production`,
+`JWT_SECRET` (generate a fresh random secret of at least 32 characters),
+`JWT_EXPIRES_IN=1d`, `APP_TIMEZONE=Asia/Kolkata`, and `TRUST_PROXY_HOPS=1`.
+Let Render provide `PORT`. Never upload the local `.env` to Git.
+
+The proxy hop setting makes auth rate limits apply to each client behind Render's
+proxy. Keep it at `0` for direct local access; review it if adding a CDN or another
+proxy. Do not use an unrestricted `trust proxy=true` setting.
+
+Free Render web services sleep after 15 minutes without inbound traffic, so the
+next request can take longer. Free services do not support a separate pre-deploy
+command; this configuration runs the existing locked, transactional migration
+runner before starting the API. A migration failure prevents startup. Neon data
+persists independently of service restarts. See Render's
+[web service guide](https://render.com/docs/web-services),
+[Blueprint reference](https://render.com/docs/blueprint-spec), and
+[free service limitations](https://render.com/docs/free).
+
 ## Environment
 
 All application settings are listed in [server/.env.example](server/.env.example).
@@ -221,6 +275,7 @@ environment variables take precedence. Never commit `server/.env`.
 | `CLIENT_ORIGIN` | Allowed frontend origin, default `http://localhost:5173` |
 | `APP_TIMEZONE` | Timezone defining today, default `Asia/Kolkata` |
 | `NODE_ENV` | `development` locally; `production` disables demo seeding |
+| `TRUST_PROXY_HOPS` | Trusted upstream proxy count: default `0`, Render `1` |
 | `TEST_DATABASE_URL` | Optional separate database URL for PostgreSQL-backed tests |
 
 Client settings (public at build time): `VITE_API_URL` defaults to `/api`;
