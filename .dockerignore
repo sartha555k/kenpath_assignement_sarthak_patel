@@ -1,0 +1,16 @@
+.git
+.github
+.codex
+.agents
+.aws
+.impeccable
+**/node_modules
+**/dist
+**/coverage
+**/.env
+**/.env.*
+**/*.log
+**/.DS_Store
+docs
+test-results
+playwright-report
