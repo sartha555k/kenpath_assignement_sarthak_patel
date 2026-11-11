@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { errorHandler } from './errors.js';
 import { authRouter } from './auth.js';
 import { readingsRouter } from './readings.js';
+import { reportsRouter } from './reports.js';
 
 export function createApp({ db, config }) {
   const app = express();
@@ -21,6 +22,7 @@ export function createApp({ db, config }) {
   });
   app.use('/api/auth', authRouter(db, config));
   app.use('/api/readings', readingsRouter(db, config));
+  app.use('/api/reports', reportsRouter(db, config));
   app.use((req, res) => res.status(404).json({ error: { message: 'Route not found.' } }));
   app.use(errorHandler);
   return app;
