@@ -3,7 +3,7 @@ import { loadConfig } from './config.js';
 import { createDatabase } from './db.js';
 
 const config = loadConfig();
-const db = createDatabase(config.databaseUrl);
+const db = createDatabase(config.runtimeDatabaseUrl);
 await db.query('SELECT 1');
 const server = createApp({ db, config }).listen(config.port, () => {
   console.log(`Sweety API listening on http://localhost:${config.port}`);

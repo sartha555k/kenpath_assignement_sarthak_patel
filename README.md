@@ -183,6 +183,28 @@ The command can also be run against a future hosted PostgreSQL database by
 configuring `DATABASE_URL` for that database and applying migrations first.
 Local PGlite data is not automatically uploaded when a hosted database is created.
 
+### Connect to Neon
+
+Create a PostgreSQL project in Neon and copy its direct and pooled connection URLs
+from the Connect dialog. Set these in your private `server/.env`:
+
+```dotenv
+DATABASE_URL=postgresql://USER:PASSWORD@DIRECT_HOST/neondb?sslmode=verify-full&channel_binding=require
+DATABASE_URL_POOLED=postgresql://USER:PASSWORD@POOLED_HOST/neondb?sslmode=verify-full&channel_binding=require
+```
+
+The API uses the pooled URL when provided; migrations and seeds use the direct
+URL. Keep TLS enabled. Apply `npm run db:migrate`, optionally run the demo seeds,
+then restart the API with `npm run dev` or `npm start`. No local PostgreSQL or
+Docker database is needed when using Neon. Changing the URL does not copy local
+records; export/import existing data separately if it must be preserved.
+
+For a hosted API, set these same variables in the host's environment settings,
+along with a random `JWT_SECRET`, `NODE_ENV=production`, and the deployed frontend's
+`CLIENT_ORIGIN`. Run migrations before starting the API. Database connection URLs
+belong only on the server, never in frontend variables or Git. Neon hosts the
+database; deploy the Express API and React frontend separately.
+
 ## Environment
 
 All application settings are listed in [server/.env.example](server/.env.example).
@@ -192,7 +214,8 @@ environment variables take precedence. Never commit `server/.env`.
 | Variable | Purpose |
 | --- | --- |
 | `PORT` | HTTP port, default `4000` |
-| `DATABASE_URL` | Required PostgreSQL connection URL |
+| `DATABASE_URL` | Required direct PostgreSQL URL; used by migrations and seeds |
+| `DATABASE_URL_POOLED` | Optional pooled URL for the API; defaults to `DATABASE_URL` |
 | `JWT_SECRET` | Required random signing secret, at least 32 characters |
 | `JWT_EXPIRES_IN` | Token lifetime, default `1d` |
 | `CLIENT_ORIGIN` | Allowed frontend origin, default `http://localhost:5173` |
