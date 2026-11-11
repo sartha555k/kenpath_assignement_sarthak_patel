@@ -42,11 +42,12 @@ so no browser-visible container hostnames or separate API port are needed.
 Add the optional demo account and readings explicitly:
 
 ```sh
-docker compose exec -e NODE_ENV=development api node server/scripts/seed.js
+docker compose run --rm --no-deps -e NODE_ENV=development api node server/scripts/seed.js
 ```
 
-The API container normally runs with `NODE_ENV=production`. The override applies
-only to this demo seed command; the running API keeps its production setting.
+The API image normally runs with `NODE_ENV=production`. This command starts a
+one-off seed container with a development override; the running API keeps its
+production setting.
 Seeding is not automatic and does not overwrite existing readings.
 
 Useful commands:

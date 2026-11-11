@@ -60,7 +60,7 @@ jobs:
       - name: Check migration reruns and add demo data
         run: |
           docker compose run --rm --no-deps migrate
-          docker compose exec -T -e NODE_ENV=development api node server/scripts/seed.js
+          docker compose run --rm --no-deps -e NODE_ENV=development api node server/scripts/seed.js
       - name: Exercise frontend, proxy and API
         run: node scripts/docker-smoke.mjs
       - name: Recreate containers while retaining the database volume
