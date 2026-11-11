@@ -4,6 +4,8 @@ Sweety is a personal glucose journal built with React, Node.js, Express and
 PostgreSQL for the Kenpath assignment. Record up to four readings a day and review
 daily, month-to-date and previous-month reports.
 
+**Live app:** [sweety-ecru.vercel.app](https://sweety-ecru.vercel.app/)
+
 ![Sweety desktop dashboard](docs/screenshots/dashboard-desktop.jpg)
 
 ## Requirements
