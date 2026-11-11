@@ -17,14 +17,17 @@ export function readingsRouter(db, config) {
     const to = req.query.to === undefined ? null : validateDate(req.query.to, config.timezone);
     if (from && to && from > to) throw new AppError(400, 'Start date must be on or before end date.', 'from');
     const filters = 'user_id = $1 AND ($2::date IS NULL OR date = $2::date) AND ($3::date IS NULL OR date >= $3::date) AND ($4::date IS NULL OR date <= $4::date)';
+    const grouped = req.query.groupBy === 'date';
+    if (req.query.groupBy !== undefined && !grouped) throw new AppError(400, 'groupBy must be date.', 'groupBy');
+    const datePage = grouped ? ` AND date IN (SELECT DISTINCT date FROM readings WHERE ${filters} ORDER BY date DESC LIMIT $5 OFFSET $6)` : '';
     const { rows } = await db.query(
-      `SELECT ${columns} FROM readings WHERE ${filters}
+      `SELECT ${columns} FROM readings WHERE ${filters}${datePage}
        ORDER BY date DESC, CASE slot WHEN 'morning' THEN 1 WHEN 'after_breakfast' THEN 2 WHEN 'after_lunch' THEN 3 ELSE 4 END
-       LIMIT $5 OFFSET $6`, [req.userId, date, from, to, limit, (page - 1) * limit],
+       ${grouped ? '' : 'LIMIT $5 OFFSET $6'}`, [req.userId, date, from, to, limit, (page - 1) * limit],
     );
-    const count = await db.query(`SELECT count(*)::int AS total FROM readings WHERE ${filters}`, [req.userId, date, from, to]);
+    const count = await db.query(`SELECT ${grouped ? 'count(DISTINCT date)' : 'count(*)'}::int AS total, count(*)::int AS "totalReadings" FROM readings WHERE ${filters}`, [req.userId, date, from, to]);
     const total = count.rows[0].total;
-    res.json({ readings: rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
+    res.json({ readings: rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit), totalReadings: count.rows[0].totalReadings, unit: grouped ? "dates" : "readings" } });
   });
 
   async function conflict(error, userId, date, slot) {

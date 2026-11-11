@@ -15,6 +15,7 @@ import {
 import { Brand } from "./Brand.jsx";
 import { DatePicker } from "./DatePicker.jsx";
 import { ReadingForm } from "./ReadingForm.jsx";
+import { HistoryGroups } from "./HistoryGroups.jsx";
 import { ReadingRows } from "./ReadingRows.jsx";
 import { ReportSummary } from "./ReportSummary.jsx";
 import { TrendChart } from "./TrendChart.jsx";
@@ -105,7 +106,7 @@ export function Dashboard({ user, onLogout }) {
     const controller = new AbortController();
     if (loadedHistoryPage.current !== page) setHistoryLoading(true);
     setHistoryError("");
-    api(`/readings?page=${page}&limit=12`, { signal: controller.signal })
+    api(`/readings?groupBy=date&page=${page}&limit=7`, { signal: controller.signal })
       .then((data) => {
         if (controller.signal.aborted) return;
         loadedHistoryPage.current = page;
@@ -458,7 +459,7 @@ export function Dashboard({ user, onLogout }) {
               <div className="section-heading">
                 <h2 id="history-title">Reading history</h2>
                 <span className="muted history-count">
-                  {history?.pagination.total ?? "—"} readings
+                  {history?.pagination.totalReadings ?? "—"} readings
                 </span>
               </div>
               {historyLoading ? (
@@ -474,12 +475,7 @@ export function Dashboard({ user, onLogout }) {
                   </button>
                 </div>
               ) : history?.readings.length ? (
-                <ReadingRows
-                  readings={history.readings}
-                  showDates
-                  onEdit={openForm}
-                  onDelete={deleteReading}
-                />
+                <HistoryGroups readings={history.readings} onEdit={openForm} onDelete={deleteReading} />
               ) : (
                 <div className="empty-state">
                   <BookOpen size={30} strokeWidth={1.3} />
