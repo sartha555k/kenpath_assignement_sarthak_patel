@@ -73,17 +73,21 @@ export function Dashboard({ user, onLogout }) {
   const [historyError, setHistoryError] = useState("");
   const [historyLoading, setHistoryLoading] = useState(false);
   const formRegion = useRef(null);
+  const loadedDate = useRef(null);
+  const loadedHistoryPage = useRef(null);
   const currentDate = today();
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
+    if (loadedDate.current !== date) setLoading(true);
     setError("");
     Promise.all([
       api(`/reports?date=${date}`, { signal: controller.signal }),
       getMonthReadings(date, controller.signal),
     ])
       .then(([data, readings]) => {
+        if (controller.signal.aborted) return;
+        loadedDate.current = date;
         setReports(data.reports);
         setMonthReadings(readings);
       })
@@ -99,10 +103,12 @@ export function Dashboard({ user, onLogout }) {
   useEffect(() => {
     if (view !== "history") return;
     const controller = new AbortController();
-    setHistoryLoading(true);
+    if (loadedHistoryPage.current !== page) setHistoryLoading(true);
     setHistoryError("");
     api(`/readings?page=${page}&limit=12`, { signal: controller.signal })
       .then((data) => {
+        if (controller.signal.aborted) return;
+        loadedHistoryPage.current = page;
         if (page > 1 && !data.readings.length) {
           setPage(Math.max(1, data.pagination.totalPages));
           return;
@@ -125,6 +131,7 @@ export function Dashboard({ user, onLogout }) {
   }, [toast]);
 
   function selectDate(value) {
+    setFocusRequest(0);
     setDate(value);
     setEditing(null);
     setInitialSlot("");

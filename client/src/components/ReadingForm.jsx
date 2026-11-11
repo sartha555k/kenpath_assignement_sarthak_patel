@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, Check, X } from "lucide-react";
 import { slots, today } from "../lib/dates.js";
 
@@ -56,11 +56,6 @@ export function ReadingForm({
   });
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
-  const valueRef = useRef(null);
-
-  useEffect(() => {
-    if (focusRequest) valueRef.current?.focus({ preventScroll: true });
-  }, [focusRequest]);
 
   function change(event) {
     setFields({ ...fields, [event.target.name]: event.target.value });
@@ -159,7 +154,6 @@ export function ReadingForm({
             <div className="glucose-input">
               <input
                 id="reading-value"
-                ref={valueRef}
                 name="value"
                 inputMode="numeric"
                 type="text"
