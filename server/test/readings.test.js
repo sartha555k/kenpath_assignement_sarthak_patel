@@ -4,6 +4,28 @@ import { setup } from './helpers.js';
 
 const reading = { date: '2024-02-29', slot: 'after_lunch', value: 120 };
 
+test('history date pagination keeps complete days together and isolates users', async () => {
+  const {db,api,register} = await setup();
+  try {
+    const user = await register();
+    const other = await register('other@example.com');
+    for (const date of ['2024-02-28','2024-02-29']) {
+      for (const slot of ['morning','after_breakfast','after_lunch','after_dinner']) {
+        await db.query('INSERT INTO readings (user_id,date,slot,value) VALUES ($1,$2,$3,100)',[user.user.id,date,slot]);
+      }
+    }
+    await db.query("INSERT INTO readings (user_id,date,slot,value) VALUES ($1,'2024-03-01','morning',150)",[other.user.id]);
+    const first = await api.get('/api/readings?groupBy=date&limit=1').set('Authorization',user.authorization);
+    assert.equal(first.status,200);
+    assert.equal(first.body.readings.length,4);
+    assert.ok(first.body.readings.every(row=>row.date==='2024-02-29'));
+    assert.equal(first.body.pagination.total,2);
+    assert.equal(first.body.pagination.totalReadings,8);
+    const second = await api.get('/api/readings?groupBy=date&limit=1&page=2').set('Authorization',user.authorization);
+    assert.ok(second.body.readings.every(row=>row.date==='2024-02-28'));
+  } finally { await db.close(); }
+});
+
 test('reading CRUD, pagination and strict ownership', async () => {
   const { db, api, register } = await setup();
   try {

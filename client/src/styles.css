@@ -1790,3 +1790,20 @@ h3 {
     scroll-behavior: auto !important;
   }
 }
+
+.history-groups { margin-top: 24px; }
+.history-day + .history-day { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
+.history-day > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: var(--panel); border-radius: 9px; }
+.history-day > header > div { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.history-day h3 { font-size: 14px; font-weight: 750; }
+.history-day time, .history-day header > span { color: var(--muted); font-size: 11px; }
+.history-day .reading-rows { margin-top: 0; padding: 0 10px; }
+.trend-chart { --accent: var(--olive); }
+.trend-chart g[role="button"] { cursor: pointer; outline: none; }
+.trend-chart g[role="button"]:focus-visible circle:last-child, .trend-chart g[aria-pressed="true"] circle:last-child { r: 5.5; stroke: var(--accent); stroke-width: 3; paint-order: stroke; }
+.chart-detail { min-height: 56px; margin-top: 15px; padding: 12px 0 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 14px; font-size: 11px; color: var(--muted); }
+.chart-detail strong { color: var(--accent); font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chart-detail small { font-size: 11px; font-weight: 500; }
+.glucose-input:focus-within { border-color: var(--olive); box-shadow: 0 2px 0 var(--olive); }
+.glucose-input input:focus-visible { outline: none; }
+@media(max-width:700px) { .history-day > header { align-items: flex-start; padding: 13px 12px; } .history-day > header > div { display: grid; gap: 5px; } .history-day header > span { font-size: 10px; text-align: right; } .history-day .reading-rows { padding: 0; } }
