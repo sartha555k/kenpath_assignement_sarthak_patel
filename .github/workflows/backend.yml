@@ -61,6 +61,7 @@ jobs:
         run: |
           docker compose run --rm --no-deps migrate
           docker compose run --rm --no-deps -e NODE_ENV=development api node server/scripts/seed.js
+          docker compose run --rm --no-deps -e NODE_ENV=development api node server/scripts/seed-range.js --from 2024-10-14 --to 2024-10-15
       - name: Exercise frontend, proxy and API
         run: node scripts/docker-smoke.mjs
       - name: Recreate containers while retaining the database volume
